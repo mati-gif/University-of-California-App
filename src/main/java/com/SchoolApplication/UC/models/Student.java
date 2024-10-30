@@ -28,11 +28,17 @@ public class Student extends Usuarioo {
     @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     Set<StudentCurse> studentCurses = new HashSet<>();
 
+    public Set<StudentCurse> getStudentCurses() {
+        return studentCurses;
+    }
 
+    public void setStudentCurses(Set<StudentCurse> studentCurses) {
+        this.studentCurses = studentCurses;
+    }
 
 
     public void addStudentCurse(StudentCurse studentCurse) {
-        studentCurse.setStudent(this);
+        studentCurse.setStudent(this); //asigna la instancia actual de Student,Esto asegura que StudentCurse tenga una referencia clara al Student al que está asociado
         studentCurses.add(studentCurse);
     }
 

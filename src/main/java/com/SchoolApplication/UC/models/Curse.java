@@ -24,6 +24,9 @@ public class Curse {
     @OneToMany(mappedBy = "curse" , fetch = FetchType.EAGER)
     Set<StudentCurse> studentCurses = new HashSet<>();
 
+    @OneToMany(mappedBy = "curse" , fetch = FetchType.EAGER)
+    Set<TeacherCurse> teacherCurses = new HashSet<>();
+
     public Curse(String nameSubject, String yearCurse, int maxCapacity) {
         this.nameSubject = nameSubject;
         this.yearCurse = yearCurse;
@@ -33,7 +36,21 @@ public class Curse {
     public Curse() {
     }
 
+    public Set<StudentCurse> getStudentCurses() {
+        return studentCurses;
+    }
 
+    public void setStudentCurses(Set<StudentCurse> studentCurses) {
+        this.studentCurses = studentCurses;
+    }
+
+    public Set<TeacherCurse> getTeacherCurses() {
+        return teacherCurses;
+    }
+
+    public void setTeacherCurses(Set<TeacherCurse> teacherCurses) {
+        this.teacherCurses = teacherCurses;
+    }
 
     public long getId() {
         return id;
@@ -95,6 +112,14 @@ public class Curse {
         return studentCurses.stream().map(c -> c.getStudent()).collect(Collectors.toList());
     }
 
+    public void addTeacherCurse(TeacherCurse teacherCurse) {
+        teacherCurse.setCurse(this);
+        teacherCurses.add(teacherCurse);
+    }
+
+    public List<Teacher> getTeachers(){
+        return teacherCurses.stream().map(c -> c.getTeacher()).collect(Collectors.toList());
+    }
 
 
 
