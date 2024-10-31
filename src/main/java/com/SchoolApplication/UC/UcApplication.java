@@ -202,6 +202,7 @@ public class UcApplication {
 			curse3.addTeacherCurse(teacherCurse3);
 
 
+			teacherCurseRepository.save(teacherCurse3);
 
 			// ↓↓↓↓↓↓↓  Teacher2 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
@@ -232,24 +233,36 @@ public class UcApplication {
 
 /////--------------------- Añadiendo la asistencia a un StudentCurse    y a un TeacherCurse     --------------//
 
-//			Attendance attendance1 = new Attendance(now, StatusAttendance.PRESENT, 100);
+			// Añadiendo la asistencia a un StudentCurse
+			Attendance attendance1 = new Attendance(now, StatusAttendance.PRESENT);
+			studentCurse1.addAttendance(attendance1);
+			attendanceRepository.save(attendance1);
+			studentCurseRepository.save(studentCurse1);
 
-// Establecer la relación con StudentCurse y TeacherCurse
-//			studentCurse1.addAttendance(attendance1); // Esto establece studentCurse en Attendance
-//			attendance1.setTeacherCurse(teacherCurse1); // Establecer la relación con TeacherCurse
-
-//			attendanceRepository.save(attendance1);
-
-//
-//
-			Attendance attendance2 = new Attendance(now,StatusAttendance.ABSENT,80);
-//
-			System.out.println(attendance2 + "dfdfdf");
-
+			Attendance attendance2 = new Attendance(now, StatusAttendance.ABSENT);
 			studentCurse1.addAttendance(attendance2);
-			teacherCurse2.addAttendance(attendance2);
-//
 			attendanceRepository.save(attendance2);
+			studentCurseRepository.save(studentCurse1);
+
+			Attendance attendance3 = new Attendance(now, StatusAttendance.PRESENT);
+			studentCurse1.addAttendance(attendance3);
+			attendanceRepository.save(attendance3);
+			studentCurseRepository.save(studentCurse1);
+
+			Attendance attendance4 = new Attendance(now, StatusAttendance.PRESENT);
+			studentCurse2.addAttendance(attendance4);
+			attendanceRepository.save(attendance4);
+			studentCurseRepository.save(studentCurse2);
+
+			Attendance attendance5 = new Attendance(now, StatusAttendance.LATE);
+			studentCurse2.addAttendance(attendance5);
+			attendanceRepository.save(attendance5);
+			studentCurseRepository.save(studentCurse2);
+
+			Attendance attendance6 = new Attendance(now, StatusAttendance.LATE);
+			studentCurse2.addAttendance(attendance6);
+			attendanceRepository.save(attendance6);
+			studentCurseRepository.save(studentCurse2);
 
 
 

@@ -28,8 +28,8 @@ public class TeacherCurse {
     @JoinColumn(name = "curse_id")
     private Curse curse;
 
-    @OneToMany(mappedBy = "teacherCurse", fetch = FetchType.EAGER)
-    private Set<Attendance> attendances = new HashSet<>();
+//    @OneToMany(mappedBy = "teacherCurse", fetch = FetchType.EAGER)
+//    private Set<Attendance> attendances = new HashSet<>();
 
 
     public TeacherCurse(LocalDateTime assignmentDate, RoleTeacher roleTeacher) {
@@ -80,21 +80,21 @@ public class TeacherCurse {
         this.curse = curse;
     }
 
-    public Set<Attendance> getAttendances() {
-        return attendances;
-    }
+//    public Set<Attendance> getAttendances() {
+//        return attendances;
+//    }
+//
+//    public void setAttendances(Set<Attendance> attendances) {
+//        this.attendances = attendances;
+//    }
 
-    public void setAttendances(Set<Attendance> attendances) {
-        this.attendances = attendances;
-    }
-
-    public void addAttendance(Attendance attendance) {
-        attendance.setTeacherCurse(this); // Establece el profesor de la asistencia
-        attendances.add(attendance);
-    }
+//    public void addAttendance(Attendance attendance) {
+//        attendance.setTeacherCurse(this); // Establece el profesor de la asistencia
+//        attendances.add(attendance);
+//    }
 
 
-    public List<StudentCurse> getStudentCurses() {
-        return attendances.stream().map(a -> a.getStudentCurse()).collect(Collectors.toList());
-    }
+//    public List<StudentCurse> getStudentCurses() {
+//        return attendances.stream().map(a -> a.getStudentCurse()).collect(Collectors.toList());
+//    }
 }

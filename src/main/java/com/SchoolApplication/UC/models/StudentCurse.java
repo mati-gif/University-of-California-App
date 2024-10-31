@@ -2,6 +2,7 @@ package com.SchoolApplication.UC.models;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -17,6 +18,8 @@ public class StudentCurse {
 
     private LocalDateTime registrationDate;
     private Status status;
+    private double monthlyAttendancePercentage;
+
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -88,12 +91,36 @@ public class StudentCurse {
         this.attendances = attendances;
     }
 
-    public void addAttendance(Attendance attendance) {
-        attendance.setStudentCurse(this); // Establece el estudiante de la asistencia
-        attendances.add(attendance);
+
+    public double getMonthlyAttendancePercentage() {
+        return monthlyAttendancePercentage;
     }
 
-    public List<TeacherCurse> getCurseTeachers() {
-        return attendances.stream().map(a -> a.getTeacherCurse()).collect(Collectors.toList());
+    public void setMonthlyAttendancePercentage(double monthlyAttendancePercentage) {
+        this.monthlyAttendancePercentage = monthlyAttendancePercentage;
     }
+
+
+    //Reveer la logica para añadir una  asistencia , No esta funcionando bien .
+    public void addAttendance(Attendance attendance) {
+        attendance.setStudentCurse(this);
+        attendances.add(attendance);
+        updateAttendancePercentage(); // Actualiza el porcentaje de asistencia acumulado
+    }
+
+    private void updateAttendancePercentage() {
+        // Filtrar por mes actual
+        long diasAsistidos = attendances.stream()
+                .filter(att -> att.getDate().getMonth() == LocalDateTime.now().getMonth() &&
+                        att.getStatusAttendance() == StatusAttendance.PRESENT)
+                .count();
+
+        long diasTotales = attendances.stream()
+                .filter(att -> att.getDate().getMonth() == LocalDateTime.now().getMonth())
+                .count();
+
+        // Calcular el porcentaje
+        this.monthlyAttendancePercentage = diasTotales > 0 ? (diasAsistidos * 100.0) / diasTotales : 0.0;
+    }
+
 }
