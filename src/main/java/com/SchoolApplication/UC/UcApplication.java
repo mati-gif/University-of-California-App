@@ -26,7 +26,9 @@ public class UcApplication {
 									  CurseRepository curseRepository,
 									  ScheduleRepository scheduleRepository,
 									  CurseScheduleRepository curseScheduleRepository,
-									  StudentCurseRepository studentCurseRepository) { // Define un bean de tipo CommandLineRunner que recibe un StudentRepository como parámetro.
+									  StudentCurseRepository studentCurseRepository,
+									  TeacherCurseRepository teacherCurseRepository,
+									  AttendanceRepository attendanceRepository) { // Define un bean de tipo CommandLineRunner que recibe un StudentRepository como parámetro.
 		// initData toma una instancia de StudentRepository como parámetro y utiliza este repositorio para guardar algunos clientes en la base de datos al iniciar la aplicación.
 		//Es un singleton que se ejecutan una vez cada vez que se inicia la aplicación.
 
@@ -115,10 +117,14 @@ public class UcApplication {
 			curseScheduleRepository.save(curseSchedule6);
 //--------------------------------------------------------------------------------
 
+
+
+/////--------------------- Crear StudentCurse y asociar los Cursos al estudiante Melba y Chloe     --------------//
+
+
 			LocalDateTime now = LocalDateTime.now(); //Declaras una variable llamada now de tipo LocalDateTime
 			System.out.println(now);
 
-/////--------------------- Crear StudentCurse y asociar los Cursos al estudiante Melba y Chloe     --------------//
 
 			// ↓↓↓↓↓↓↓  Student1 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
@@ -166,6 +172,86 @@ public class UcApplication {
 			curse3.addStudentCurse(studentCurse6);
 
 			studentCurseRepository.save(studentCurse6);
+
+/////--------------------- Crear TeacherCurse y asociar los Cursos al Profesor Miguel y Gonzalo     --------------//
+
+
+
+
+			// ↓↓↓↓↓↓↓  Teacher1 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+//          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
+			TeacherCurse teacherCurse1 = new TeacherCurse(now,RoleTeacher.MAIN);
+			teacher1.addTeacherCurse(teacherCurse1);
+			curse1.addTeacherCurse(teacherCurse1);
+
+
+			teacherCurseRepository.save(teacherCurse1);
+
+
+			TeacherCurse teacherCurse2 = new TeacherCurse(now,RoleTeacher.ASSISTANT);
+			teacher1.addTeacherCurse(teacherCurse2);
+			curse2.addTeacherCurse(teacherCurse2);
+
+
+			teacherCurseRepository.save(teacherCurse2);
+
+
+
+			TeacherCurse teacherCurse3 = new TeacherCurse(now,RoleTeacher.COLLABORATOR);
+			teacher1.addTeacherCurse(teacherCurse3);
+			curse3.addTeacherCurse(teacherCurse3);
+
+
+
+			// ↓↓↓↓↓↓↓  Teacher2 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+//          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
+
+			TeacherCurse teacherCurse4 = new TeacherCurse(now,RoleTeacher.MAIN);
+			teacher2.addTeacherCurse(teacherCurse4);
+			curse1.addTeacherCurse(teacherCurse4);
+
+
+			teacherCurseRepository.save(teacherCurse4);
+
+
+			TeacherCurse teacherCurse5 = new TeacherCurse(now,RoleTeacher.ASSISTANT);
+			teacher2.addTeacherCurse(teacherCurse5);
+			curse2.addTeacherCurse(teacherCurse5);
+
+
+			teacherCurseRepository.save(teacherCurse5);
+
+
+			TeacherCurse teacherCurse6 = new TeacherCurse(now,RoleTeacher.COLLABORATOR);
+			teacher2.addTeacherCurse(teacherCurse6);
+			curse3.addTeacherCurse(teacherCurse6);
+
+
+			teacherCurseRepository.save(teacherCurse6);
+
+
+/////--------------------- Añadiendo la asistencia a un StudentCurse    y a un TeacherCurse     --------------//
+
+//			Attendance attendance1 = new Attendance(now, StatusAttendance.PRESENT, 100);
+
+// Establecer la relación con StudentCurse y TeacherCurse
+//			studentCurse1.addAttendance(attendance1); // Esto establece studentCurse en Attendance
+//			attendance1.setTeacherCurse(teacherCurse1); // Establecer la relación con TeacherCurse
+
+//			attendanceRepository.save(attendance1);
+
+//
+//
+			Attendance attendance2 = new Attendance(now,StatusAttendance.ABSENT,80);
+//
+			System.out.println(attendance2 + "dfdfdf");
+
+			studentCurse1.addAttendance(attendance2);
+			teacherCurse2.addAttendance(attendance2);
+//
+			attendanceRepository.save(attendance2);
+
+
 
 		};
 	}
