@@ -2,9 +2,8 @@ package com.SchoolApplication.UC.dtos;
 
 
 import com.SchoolApplication.UC.models.Student;
-import com.SchoolApplication.UC.models.StudentCurse;
+import com.SchoolApplication.UC.models.StudentCourse;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,20 +13,20 @@ public class StudentDto {
     private String lastName;
     private String email;
 
-    private Set<StudentCurseDto> curses ; // Declara una variable privada de tipo Set<StudentCurseDto> llamada curses. Tambien se puede decir : Ceclara un set llamado curses que tendra objetos de tipo StudentCurseDto.
+    private Set<StudentCourseDto> courses ; // Declara una variable privada de tipo Set<StudentCourseDto> llamada courses. Tambien se puede decir : Ceclara un set llamado courses que tendra objetos de tipo StudentCourseDto.
 
     public StudentDto(Student student) {
         this.id = student.getId();
         this.firstName = student.getFirstName();
         this.lastName = student.getLastName();
         this.email = student.getEmail();
-        this.curses = convertStudentCursesToDto(student.getStudentCurses());
+        this.courses = convertStudentCoursesToDto(student.getStudentCourses());
 
     }
 
-    private Set<StudentCurseDto> convertStudentCursesToDto(Set<StudentCurse> curses){
-        return curses.stream()
-                .map(StudentCurseDto::new)
+    private Set<StudentCourseDto> convertStudentCoursesToDto(Set<StudentCourse> courses){
+        return courses.stream()
+                .map(StudentCourseDto::new)
                 .collect(Collectors.toSet());
     }
 
@@ -47,7 +46,7 @@ public class StudentDto {
         return email;
     }
 
-    public Set<StudentCurseDto> getCurses() {
-        return curses;
+    public Set<StudentCourseDto> getCourses() {
+        return courses;
     }
 }

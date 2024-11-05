@@ -16,12 +16,12 @@ public class Attendance {
 //    private  int attendancePorcentage;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "student_curse_id")
-    private StudentCurse studentCurse;
+    @JoinColumn(name = "student_course_id")
+    private StudentCourse studentCourse;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "teacher_curse_id")
-//    private TeacherCurse teacherCurse;
+//    @JoinColumn(name = "teacher_course_id")
+//    private TeacherCourse teacherCourse;
 
 
     public Attendance(LocalDateTime date, StatusAttendance statusAttendance) {
@@ -57,13 +57,13 @@ public class Attendance {
         this.statusAttendance = statusAttendance;
     }
 
-    public StudentCurse getStudentCurse() {
-        return studentCurse;
+    public StudentCourse getStudentCourse() {
+        return studentCourse;
     }
 
-    public void setStudentCurse(StudentCurse studentCurse) {
-        this.studentCurse = studentCurse;
-//        studentCurse.addAttendance(this); // Actualiza el StudentCurse cuando se asigna una nueva asistencia
+    public void setStudentCourse(StudentCourse studentCourse) {
+        this.studentCourse = studentCourse;
+//        studentCourse.addAttendance(this); // Actualiza el StudentCourse cuando se asigna una nueva asistencia
     }
 
 

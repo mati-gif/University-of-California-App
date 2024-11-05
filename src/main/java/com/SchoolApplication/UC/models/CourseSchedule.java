@@ -3,7 +3,7 @@ package com.SchoolApplication.UC.models;
 import jakarta.persistence.*;
 
 @Entity
-public class CurseSchedule {
+public class CourseSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,20 +13,20 @@ public class CurseSchedule {
     private String time;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "curse_id")//Esta seria la clave foranea de la tabla curse
-    private Curse curse;
+    @JoinColumn(name = "course_id")//Esta seria la clave foranea de la tabla course
+    private Course course;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;//Esta seria la clave foranea de la tabla schedule
 
 
-    public CurseSchedule(String dayOfWeek, String time) {
+    public CourseSchedule(String dayOfWeek, String time) {
         this.dayOfWeek = dayOfWeek;
         this.time = time;
     }
 
-    public CurseSchedule() {
+    public CourseSchedule() {
     }
 
 
@@ -54,12 +54,12 @@ public class CurseSchedule {
         this.id = id;
     }
 
-    public Curse getCurse() {
-        return curse;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCurse(Curse curse) {
-        this.curse = curse;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public Schedule getSchedule() {

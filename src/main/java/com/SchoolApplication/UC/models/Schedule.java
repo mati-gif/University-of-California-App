@@ -16,17 +16,16 @@ public class Schedule {
     private long id;
 
     private Shift shift;
-    @ElementCollection
-// se utiliza para crear listas de  objetos integrables.Un objeto integrable son datos destinados a usarse únicamente en el objeto que lo contiene.//Esto se hace asi porque trabajamos con datos simples y Spring se encarga de crear esta entidad y configurar la relación uno a muchos automáticamente.
+    @ElementCollection// se utiliza para crear listas de  objetos integrables.Un objeto integrable son datos destinados a usarse únicamente en el objeto que lo contiene.//Esto se hace asi porque trabajamos con datos simples y Spring se encarga de crear esta entidad y configurar la relación uno a muchos automáticamente.
     @Column(name = "days")
     private List<String> days = new ArrayList<>();
-    @ElementCollection
-    // se utiliza para crear listas de  objetos integrables.Un objeto integrable son datos destinados a usarse únicamente en el objeto que lo contiene.//Esto se hace asi porque trabajamos con datos simples y Spring se encarga de crear esta entidad y configurar la relación uno a muchos automáticamente.
+
+    @ElementCollection// se utiliza para crear listas de  objetos integrables.Un objeto integrable son datos destinados a usarse únicamente en el objeto que lo contiene.//Esto se hace asi porque trabajamos con datos simples y Spring se encarga de crear esta entidad y configurar la relación uno a muchos automáticamente.
     @Column(name = "times")
     private List<String> times = new ArrayList<>();
 
     @OneToMany(mappedBy = "schedule", fetch = FetchType.EAGER)
-    Set<CurseSchedule> curseSchedules = new HashSet<>();
+    Set<CourseSchedule> courseSchedules = new HashSet<>();
 
     public Schedule(Shift shift, List<String> days, List<String> times) {
         this.shift = shift;
@@ -70,21 +69,21 @@ public class Schedule {
         this.times = times;
     }
 
-    public Set<CurseSchedule> getCurseSchedules() {
-        return curseSchedules;
+    public Set<CourseSchedule> getCourseSchedules() {
+        return courseSchedules;
     }
 
-    public void setCurseSchedules(Set<CurseSchedule> curseSchedules) {
-        this.curseSchedules = curseSchedules;
+    public void setCourseSchedules(Set<CourseSchedule> courseSchedules) {
+        this.courseSchedules = courseSchedules;
     }
 
-    public void addCurseSchedule(CurseSchedule curseSchedule){
-        curseSchedule.setSchedule(this);
-        curseSchedules.add(curseSchedule);
+    public void addCourseSchedule(CourseSchedule courseSchedule){
+        courseSchedule.setSchedule(this);
+        courseSchedules.add(courseSchedule);
     }
 
-    public List<Curse> getCurses(){
-        return curseSchedules.stream().map(c -> c.getCurse()).collect( Collectors.toList());
+    public List<Course> getCourses(){
+        return courseSchedules.stream().map(c -> c.getCourse()).collect( Collectors.toList());
     }
 
 }

@@ -26,24 +26,24 @@ public class Student extends Usuarioo {
     }
 
     @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
-    Set<StudentCurse> studentCurses = new HashSet<>();
+    Set<StudentCourse> studentCourses = new HashSet<>();
 
-    public Set<StudentCurse> getStudentCurses() {
-        return studentCurses;
+    public Set<StudentCourse> getStudentCourses() {
+        return studentCourses;
     }
 
-    public void setStudentCurses(Set<StudentCurse> studentCurses) {
-        this.studentCurses = studentCurses;
+    public void setStudentCourses(Set<StudentCourse> studentCourses) {
+        this.studentCourses = studentCourses;
     }
 
 
-    public void addStudentCurse(StudentCurse studentCurse) {
-        studentCurse.setStudent(this); //asigna la instancia actual de Student,Esto asegura que StudentCurse tenga una referencia clara al Student al que está asociado
-        studentCurses.add(studentCurse);
+    public void addStudentCourse(StudentCourse studentCourse) {
+        studentCourse.setStudent(this); //asigna la instancia actual de Student,Esto asegura que StudentCourse tenga una referencia clara al Student al que está asociado
+        studentCourses.add(studentCourse);
     }
 
-    public List<Curse> getCurses() {
-        return studentCurses.stream().map(c -> c.getCurse()).collect(Collectors.toList());
+    public List<Course> getCourses() {
+        return studentCourses.stream().map(c -> c.getCourse()).collect(Collectors.toList());
     }
 
 }

@@ -2,15 +2,12 @@ package com.SchoolApplication.UC.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
-public class StudentCurse {
+public class StudentCourse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,19 +24,19 @@ public class StudentCurse {
     private Student student;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "curse_id")
-    private Curse curse;
+    @JoinColumn(name = "course_id")
+    private Course course;
 
-    @OneToMany(mappedBy = "studentCurse", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "studentCourse", fetch = FetchType.EAGER)
     private Set<Attendance> attendances = new HashSet<>();
 
-    public StudentCurse(LocalDateTime registrationDate, Status status) {
+    public StudentCourse(LocalDateTime registrationDate, Status status) {
         this.registrationDate = registrationDate;
         this.status = status;
 
     }
 
-    public StudentCurse() {
+    public StudentCourse() {
     }
 
     public long getId() {
@@ -74,12 +71,12 @@ public class StudentCurse {
         this.status = status;
     }
 
-    public Curse getCurse() {
-        return curse;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCurse(Curse curse) {
-        this.curse = curse;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
 
@@ -103,7 +100,7 @@ public class StudentCurse {
 
     //Reveer la logica para añadir una  asistencia , No esta funcionando bien .
     public void addAttendance(Attendance attendance) {
-        attendance.setStudentCurse(this);
+        attendance.setStudentCourse(this);
         attendances.add(attendance);
         updateAttendancePercentage(); // Actualiza el porcentaje de asistencia acumulado
     }

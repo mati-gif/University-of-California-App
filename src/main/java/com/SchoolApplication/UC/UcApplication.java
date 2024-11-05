@@ -7,7 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -23,11 +22,11 @@ public class UcApplication {
 	public CommandLineRunner initData(UsuariooRepository usuariooRepository,
 									  StudentRepository studentRepository,
 									  TeacherRepository teacherRepository,
-									  CurseRepository curseRepository,
+									  CourseRepository courseRepository,
 									  ScheduleRepository scheduleRepository,
-									  CurseScheduleRepository curseScheduleRepository,
-									  StudentCurseRepository studentCurseRepository,
-									  TeacherCurseRepository teacherCurseRepository,
+									  CourseScheduleRepository courseScheduleRepository,
+									  StudentCourseRepository studentCourseRepository,
+									  TeacherCourseRepository teacherCourseRepository,
 									  AttendanceRepository attendanceRepository) { // Define un bean de tipo CommandLineRunner que recibe un StudentRepository como parámetro.
 		// initData toma una instancia de StudentRepository como parámetro y utiliza este repositorio para guardar algunos clientes en la base de datos al iniciar la aplicación.
 		//Es un singleton que se ejecutan una vez cada vez que se inicia la aplicación.
@@ -49,15 +48,15 @@ public class UcApplication {
 			teacherRepository.save(teacher1);
 			teacherRepository.save(teacher2);
 
-			// Create Curses
+			// Create Courses
 
-			Curse curse1 = new Curse("Math", "Junior or 3rd year", 20);
-			Curse curse2 = new Curse("physics", "Senior or 4th year", 30);
-			Curse curse3 = new Curse("Chemistry", "Senior or 4th year", 10);
+			Course course1 = new Course("Math", "Junior or 3rd year", 20);
+			Course course2 = new Course("physics", "Senior or 4th year", 30);
+			Course course3 = new Course("Chemistry", "Senior or 4th year", 10);
 
-			curseRepository.save(curse1);
-			curseRepository.save(curse2);
-			curseRepository.save(curse3);
+			courseRepository.save(course1);
+			courseRepository.save(course2);
+			courseRepository.save(course3);
 
 			//Create Schedule
 			Schedule schedule1 = new Schedule(Shift.MORNING, Arrays.asList("Monday and Wednesday" , "Tuesday and Thursday"), Arrays.asList("8:00 a 10:00", "10:00 a 12:00"));
@@ -70,199 +69,199 @@ public class UcApplication {
 			scheduleRepository.save(schedule3);
 
 
-/////--------------------- Crear CurseSchedule y asociar los Horarios al estudiante Melba    --------------//
+/////--------------------- Crear CourseSchedule y asociar los Horarios al estudiante Melba    --------------//
 
 
-// ↓↓↓↓↓↓↓  Curse1 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
+// ↓↓↓↓↓↓↓  Course1 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
 //          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         //
 
-			CurseSchedule curseSchedule1 = new CurseSchedule("Monday and Wednesday", "8:00 a 10:00");
-			curse1.addCurseSchedule(curseSchedule1);
-			schedule1.addCurseSchedule(curseSchedule1);
+			CourseSchedule courseSchedule1 = new CourseSchedule("Monday and Wednesday", "8:00 a 10:00");
+			course1.addCourseSchedule(courseSchedule1);
+			schedule1.addCourseSchedule(courseSchedule1);
 
-			curseScheduleRepository.save(curseSchedule1);
-
-
-			CurseSchedule curseSchedule2 = new CurseSchedule("Monday and Friday", "14:00 a 16:00");
-			curse1.addCurseSchedule(curseSchedule2);
-			schedule2.addCurseSchedule(curseSchedule2);
-
-			curseScheduleRepository.save(curseSchedule2);
+			courseScheduleRepository.save(courseSchedule1);
 
 
-			CurseSchedule curseSchedule3 = new CurseSchedule("Tuesday and Friday", "20:00 a 22:00");
-			curse1.addCurseSchedule(curseSchedule3);
-			schedule3.addCurseSchedule(curseSchedule3);
+			CourseSchedule courseSchedule2 = new CourseSchedule("Monday and Friday", "14:00 a 16:00");
+			course1.addCourseSchedule(courseSchedule2);
+			schedule2.addCourseSchedule(courseSchedule2);
 
-			curseScheduleRepository.save(curseSchedule3);
+			courseScheduleRepository.save(courseSchedule2);
 
-// ↓↓↓↓↓↓↓  Curse2 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
+
+			CourseSchedule courseSchedule3 = new CourseSchedule("Tuesday and Friday", "20:00 a 22:00");
+			course1.addCourseSchedule(courseSchedule3);
+			schedule3.addCourseSchedule(courseSchedule3);
+
+			courseScheduleRepository.save(courseSchedule3);
+
+// ↓↓↓↓↓↓↓  Course2 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
 //          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         //
-			CurseSchedule curseSchedule4 = new CurseSchedule("Monday and Thursday", "9:00 a 11:00");
-			curse2.addCurseSchedule(curseSchedule4);
-			schedule1.addCurseSchedule(curseSchedule4);
+			CourseSchedule courseSchedule4 = new CourseSchedule("Monday and Thursday", "9:00 a 11:00");
+			course2.addCourseSchedule(courseSchedule4);
+			schedule1.addCourseSchedule(courseSchedule4);
 
-			curseScheduleRepository.save(curseSchedule4);
+			courseScheduleRepository.save(courseSchedule4);
 
-			CurseSchedule curseSchedule5 = new CurseSchedule("Wednesday and Friday", "15:00 a 17:00");
-			curse2.addCurseSchedule(curseSchedule5);
-			schedule2.addCurseSchedule(curseSchedule5);
+			CourseSchedule courseSchedule5 = new CourseSchedule("Wednesday and Friday", "15:00 a 17:00");
+			course2.addCourseSchedule(courseSchedule5);
+			schedule2.addCourseSchedule(courseSchedule5);
 
-			curseScheduleRepository.save(curseSchedule5);
+			courseScheduleRepository.save(courseSchedule5);
 
-			CurseSchedule curseSchedule6 = new CurseSchedule("Tuesday and Thursday", "21:00 a 23:00");
-			curse2.addCurseSchedule(curseSchedule6);
-			schedule3.addCurseSchedule(curseSchedule6);
+			CourseSchedule courseSchedule6 = new CourseSchedule("Tuesday and Thursday", "21:00 a 23:00");
+			course2.addCourseSchedule(courseSchedule6);
+			schedule3.addCourseSchedule(courseSchedule6);
 
-			curseScheduleRepository.save(curseSchedule6);
+			courseScheduleRepository.save(courseSchedule6);
 //--------------------------------------------------------------------------------
 
 
 
-/////--------------------- Crear StudentCurse y asociar los Cursos al estudiante Melba y Chloe     --------------//
+/////--------------------- Crear StudentCourse y asociar los Cursos al estudiante Melba y Chloe     --------------//
 
 
 			LocalDateTime now = LocalDateTime.now(); //Declaras una variable llamada now de tipo LocalDateTime
 			System.out.println(now);
 
 
-			// ↓↓↓↓↓↓↓  Student1 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+			// ↓↓↓↓↓↓↓  Student1 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
 
-			StudentCurse studentCurse1 = new StudentCurse(now, Status.APPROVED);
-			student1.addStudentCurse(studentCurse1);
-			curse1.addStudentCurse(studentCurse1);
+			StudentCourse studentCourse1 = new StudentCourse(now, Status.APPROVED);
+			student1.addStudentCourse(studentCourse1);
+			course1.addStudentCourse(studentCourse1);
 
-			studentCurseRepository.save(studentCurse1);
-
-
-			StudentCurse studentCurse2 = new StudentCurse(now, Status.APPROVED);
-			student1.addStudentCurse(studentCurse2);
-			curse2.addStudentCurse(studentCurse2);
-
-			studentCurseRepository.save(studentCurse2);
+			studentCourseRepository.save(studentCourse1);
 
 
-			StudentCurse studentCurse3 = new StudentCurse(now, Status.APPROVED);
-			student1.addStudentCurse(studentCurse3);
-			curse3.addStudentCurse(studentCurse3);
+			StudentCourse studentCourse2 = new StudentCourse(now, Status.APPROVED);
+			student1.addStudentCourse(studentCourse2);
+			course2.addStudentCourse(studentCourse2);
 
-			studentCurseRepository.save(studentCurse3);
+			studentCourseRepository.save(studentCourse2);
 
 
-			// ↓↓↓↓↓↓↓  Student2 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+			StudentCourse studentCourse3 = new StudentCourse(now, Status.APPROVED);
+			student1.addStudentCourse(studentCourse3);
+			course3.addStudentCourse(studentCourse3);
+
+			studentCourseRepository.save(studentCourse3);
+
+
+			// ↓↓↓↓↓↓↓  Student2 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
 
-			StudentCurse studentCurse4 = new StudentCurse(now, Status.APPROVED);
-			student2.addStudentCurse(studentCurse4);
-			curse1.addStudentCurse(studentCurse4);
+			StudentCourse studentCourse4 = new StudentCourse(now, Status.APPROVED);
+			student2.addStudentCourse(studentCourse4);
+			course1.addStudentCourse(studentCourse4);
 
-			studentCurseRepository.save(studentCurse4);
-
-
-			StudentCurse studentCurse5 = new StudentCurse(now, Status.APPROVED);
-			student2.addStudentCurse(studentCurse5);
-			curse2.addStudentCurse(studentCurse5);
-
-			studentCurseRepository.save(studentCurse5);
+			studentCourseRepository.save(studentCourse4);
 
 
-			StudentCurse studentCurse6 = new StudentCurse(now, Status.APPROVED);
-			student2.addStudentCurse(studentCurse6);
-			curse3.addStudentCurse(studentCurse6);
+			StudentCourse studentCourse5 = new StudentCourse(now, Status.APPROVED);
+			student2.addStudentCourse(studentCourse5);
+			course2.addStudentCourse(studentCourse5);
 
-			studentCurseRepository.save(studentCurse6);
-
-/////--------------------- Crear TeacherCurse y asociar los Cursos al Profesor Miguel y Gonzalo     --------------//
+			studentCourseRepository.save(studentCourse5);
 
 
+			StudentCourse studentCourse6 = new StudentCourse(now, Status.APPROVED);
+			student2.addStudentCourse(studentCourse6);
+			course3.addStudentCourse(studentCourse6);
+
+			studentCourseRepository.save(studentCourse6);
+
+/////--------------------- Crear TeacherCourse y asociar los Cursos al Profesor Miguel y Gonzalo     --------------//
 
 
-			// ↓↓↓↓↓↓↓  Teacher1 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+
+
+			// ↓↓↓↓↓↓↓  Teacher1 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
-			TeacherCurse teacherCurse1 = new TeacherCurse(now,RoleTeacher.MAIN);
-			teacher1.addTeacherCurse(teacherCurse1);
-			curse1.addTeacherCurse(teacherCurse1);
+			TeacherCourse teacherCourse1 = new TeacherCourse(now,RoleTeacher.MAIN);
+			teacher1.addTeacherCourse(teacherCourse1);
+			course1.addTeacherCourse(teacherCourse1);
 
 
-			teacherCurseRepository.save(teacherCurse1);
+			teacherCourseRepository.save(teacherCourse1);
 
 
-			TeacherCurse teacherCurse2 = new TeacherCurse(now,RoleTeacher.ASSISTANT);
-			teacher1.addTeacherCurse(teacherCurse2);
-			curse2.addTeacherCurse(teacherCurse2);
+			TeacherCourse teacherCourse2 = new TeacherCourse(now,RoleTeacher.ASSISTANT);
+			teacher1.addTeacherCourse(teacherCourse2);
+			course2.addTeacherCourse(teacherCourse2);
 
 
-			teacherCurseRepository.save(teacherCurse2);
+			teacherCourseRepository.save(teacherCourse2);
 
 
 
-			TeacherCurse teacherCurse3 = new TeacherCurse(now,RoleTeacher.COLLABORATOR);
-			teacher1.addTeacherCurse(teacherCurse3);
-			curse3.addTeacherCurse(teacherCurse3);
+			TeacherCourse teacherCourse3 = new TeacherCourse(now,RoleTeacher.COLLABORATOR);
+			teacher1.addTeacherCourse(teacherCourse3);
+			course3.addTeacherCourse(teacherCourse3);
 
 
-			teacherCurseRepository.save(teacherCurse3);
+			teacherCourseRepository.save(teacherCourse3);
 
-			// ↓↓↓↓↓↓↓  Teacher2 junto con curse1, curse2 y curse3 ↓↓↓↓↓↓↓
+			// ↓↓↓↓↓↓↓  Teacher2 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
 
-			TeacherCurse teacherCurse4 = new TeacherCurse(now,RoleTeacher.MAIN);
-			teacher2.addTeacherCurse(teacherCurse4);
-			curse1.addTeacherCurse(teacherCurse4);
+			TeacherCourse teacherCourse4 = new TeacherCourse(now,RoleTeacher.MAIN);
+			teacher2.addTeacherCourse(teacherCourse4);
+			course1.addTeacherCourse(teacherCourse4);
 
 
-			teacherCurseRepository.save(teacherCurse4);
+			teacherCourseRepository.save(teacherCourse4);
 
 
-			TeacherCurse teacherCurse5 = new TeacherCurse(now,RoleTeacher.ASSISTANT);
-			teacher2.addTeacherCurse(teacherCurse5);
-			curse2.addTeacherCurse(teacherCurse5);
+			TeacherCourse teacherCourse5 = new TeacherCourse(now,RoleTeacher.ASSISTANT);
+			teacher2.addTeacherCourse(teacherCourse5);
+			course2.addTeacherCourse(teacherCourse5);
 
 
-			teacherCurseRepository.save(teacherCurse5);
+			teacherCourseRepository.save(teacherCourse5);
 
 
-			TeacherCurse teacherCurse6 = new TeacherCurse(now,RoleTeacher.COLLABORATOR);
-			teacher2.addTeacherCurse(teacherCurse6);
-			curse3.addTeacherCurse(teacherCurse6);
+			TeacherCourse teacherCourse6 = new TeacherCourse(now,RoleTeacher.COLLABORATOR);
+			teacher2.addTeacherCourse(teacherCourse6);
+			course3.addTeacherCourse(teacherCourse6);
 
 
-			teacherCurseRepository.save(teacherCurse6);
+			teacherCourseRepository.save(teacherCourse6);
 
 
-/////--------------------- Añadiendo la asistencia a un StudentCurse    y a un TeacherCurse     --------------//
+/////--------------------- Añadiendo la asistencia a un StudentCourse    y a un TeacherCourse     --------------//
 
-			// Añadiendo la asistencia a un StudentCurse
+			// Añadiendo la asistencia a un StudentCourse
 			Attendance attendance1 = new Attendance(now, StatusAttendance.PRESENT);
-			studentCurse1.addAttendance(attendance1);
+			studentCourse1.addAttendance(attendance1);
 			attendanceRepository.save(attendance1);
-			studentCurseRepository.save(studentCurse1);
+			studentCourseRepository.save(studentCourse1);
 
 			Attendance attendance2 = new Attendance(now, StatusAttendance.ABSENT);
-			studentCurse1.addAttendance(attendance2);
+			studentCourse1.addAttendance(attendance2);
 			attendanceRepository.save(attendance2);
-			studentCurseRepository.save(studentCurse1);
+			studentCourseRepository.save(studentCourse1);
 
 			Attendance attendance3 = new Attendance(now, StatusAttendance.PRESENT);
-			studentCurse1.addAttendance(attendance3);
+			studentCourse1.addAttendance(attendance3);
 			attendanceRepository.save(attendance3);
-			studentCurseRepository.save(studentCurse1);
+			studentCourseRepository.save(studentCourse1);
 
 			Attendance attendance4 = new Attendance(now, StatusAttendance.PRESENT);
-			studentCurse2.addAttendance(attendance4);
+			studentCourse2.addAttendance(attendance4);
 			attendanceRepository.save(attendance4);
-			studentCurseRepository.save(studentCurse2);
+			studentCourseRepository.save(studentCourse2);
 
 			Attendance attendance5 = new Attendance(now, StatusAttendance.LATE);
-			studentCurse2.addAttendance(attendance5);
+			studentCourse2.addAttendance(attendance5);
 			attendanceRepository.save(attendance5);
-			studentCurseRepository.save(studentCurse2);
+			studentCourseRepository.save(studentCourse2);
 
 			Attendance attendance6 = new Attendance(now, StatusAttendance.LATE);
-			studentCurse2.addAttendance(attendance6);
+			studentCourse2.addAttendance(attendance6);
 			attendanceRepository.save(attendance6);
-			studentCurseRepository.save(studentCurse2);
+			studentCourseRepository.save(studentCourse2);
 
 
 

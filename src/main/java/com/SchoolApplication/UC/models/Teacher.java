@@ -2,7 +2,6 @@ package com.SchoolApplication.UC.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 import java.util.HashSet;
@@ -23,25 +22,25 @@ public class Teacher extends Usuarioo {
     }
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
-    private Set<TeacherCurse> teacherCurses = new HashSet<>();
+     Set<TeacherCourse> teacherCourses = new HashSet<>();
 
 
-    public Set<TeacherCurse> getTeacherCurses() {
-        return teacherCurses;
+    public Set<TeacherCourse> getTeacherCourses() {
+        return teacherCourses;
     }
 
-    public void setTeacherCurses(Set<TeacherCurse> teacherCurses) {
-        this.teacherCurses = teacherCurses;
+    public void setTeacherCourses(Set<TeacherCourse> teacherCurs) {
+        this.teacherCourses = teacherCurs;
     }
 
 
 
-    public void addTeacherCurse(TeacherCurse teacherCurse) {
-        teacherCurse.setTeacher(this);
-        teacherCurses.add(teacherCurse);
+    public void addTeacherCourse(TeacherCourse teacherCourse) {
+        teacherCourse.setTeacher(this);
+        teacherCourses.add(teacherCourse);
     }
 
-    public List<Curse> getCurses() {
-        return teacherCurses.stream().map(c -> c.getCurse()).collect(Collectors.toList());
+    public List<Course> getCourses() {
+        return teacherCourses.stream().map(c -> c.getCourse()).collect(Collectors.toList());
     }
 }
