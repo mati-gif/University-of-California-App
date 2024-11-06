@@ -24,7 +24,7 @@ public class StudentDto {
 
     }
 
-    private Set<StudentCourseDto> convertStudentCoursesToDto(Set<StudentCourse> courses){
+    private Set<StudentCourseDto> convertStudentCoursesToDto(Set<StudentCourse> courses) {
         return courses.stream()
                 .map(StudentCourseDto::new)
                 .collect(Collectors.toSet());

@@ -21,11 +21,17 @@ public class CourseDto {
         this.yearCourse = course.getYearCourse();
         this.maxCapacity = course.getMaxCapacity();
         System.out.println(course.getCourseSchedules());
+
+        System.out.println(convertCourseSchedulesToDto(course.getCourseSchedules()) + " " +  "hola funciono el sout");
+
+        System.out.println(course.getCourseSchedules() + " " +  "hola funciono el sout");
+
         this.schedules = convertCourseSchedulesToDto(course.getCourseSchedules());
     }
 
     private Set<CourseScheduleDto> convertCourseSchedulesToDto(Set<CourseSchedule> schedules){
 
+        System.out.println("Schedules en CourseDto: " + schedules);
         return schedules.stream()
                 .map(CourseScheduleDto::new)
                 .collect(Collectors.toSet());
@@ -40,6 +46,10 @@ public class CourseDto {
 
     public String getNameSubject() {
         return nameSubject;
+    }
+
+    public Set<CourseScheduleDto> getSchedules() {
+        return schedules;
     }
 
     public String getYearCourse() {

@@ -142,11 +142,11 @@ public class UcApplication {
 			studentCourseRepository.save(studentCourse2);
 
 
-			StudentCourse studentCourse3 = new StudentCourse(now, Status.APPROVED);
-			student1.addStudentCourse(studentCourse3);
-			course3.addStudentCourse(studentCourse3);
-
-			studentCourseRepository.save(studentCourse3);
+//			StudentCourse studentCourse3 = new StudentCourse(now, Status.APPROVED);
+//			student1.addStudentCourse(studentCourse3);
+//			course3.addStudentCourse(studentCourse3);
+//
+//			studentCourseRepository.save(studentCourse3);
 
 
 			// ↓↓↓↓↓↓↓  Student2 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
