@@ -1,6 +1,7 @@
 package com.SchoolApplication.UC.controllers;
 
 import com.SchoolApplication.UC.dtos.CourseDto;
+import com.SchoolApplication.UC.dtos.CourseDtoForCourseController;
 import com.SchoolApplication.UC.models.Course;
 import com.SchoolApplication.UC.repositories.CourseRepository;
 import jakarta.transaction.Transactional;
@@ -66,19 +67,19 @@ public class CourseController {
 
 
         System.out.println(allCourse + " " + "aca tambien deberian estar los cursos");
-        List<CourseDto> allCoursesDto = allCourse.stream()
-                .map(CourseDto::new)
+        List<CourseDtoForCourseController> allCoursesDtoForCourseController = allCourse.stream()
+                .map(CourseDtoForCourseController::new)
                 .collect(Collectors.toList());
 
-        System.out.println("Datos de los cursos DTO generados: " + allCoursesDto);
+        System.out.println("Datos de los cursos DTO generados: " + allCoursesDtoForCourseController);
 
 
-        if (allCoursesDto == null || allCoursesDto.isEmpty()) {
+        if (allCoursesDtoForCourseController == null || allCoursesDtoForCourseController.isEmpty()) {
 
             return new ResponseEntity<>("CoursesDTO not found", HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(allCoursesDto, HttpStatus.OK);
+        return new ResponseEntity<>(allCoursesDtoForCourseController, HttpStatus.OK);
     }
 
 }

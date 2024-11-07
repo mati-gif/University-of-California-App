@@ -1,10 +1,13 @@
 package com.SchoolApplication.UC.dtos;
 
 
+import com.SchoolApplication.UC.models.Shift;
 import com.SchoolApplication.UC.models.Status;
 import com.SchoolApplication.UC.models.StudentCourse;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class StudentCourseDto {
 
@@ -14,21 +17,24 @@ public class StudentCourseDto {
     private Status status;
     private double monthlyAttendancePercentage;
     private CourseDto moreInfoAboutCourse;
+    private List<EnrollmentDto> enrollments; // Cambiado a List<EnrollmentDto>
 //
-//    private String nameSubject;
-//    private String yearCourse;
-//    private int maxCapacity;
+
+
 
     public StudentCourseDto(StudentCourse studentCourse) {
         this.id = studentCourse.getId(); //Asignando el valor del Id del objeto studentCourse al id de studentCourseDto
         this.courseId = studentCourse.getCourse().getId();
         this.registrationDate = studentCourse.getRegistrationDate();
         this.status = studentCourse.getStatus();
-//        this.nameSubject = studentCourse.getCourse().getNameSubject();
-//        this.yearCourse = studentCourse.getCourse().getYearCourse();
-//        this.maxCapacity = studentCourse.getCourse().getMaxCapacity();
+
         this.monthlyAttendancePercentage = studentCourse.getMonthlyAttendancePercentage();
         this.moreInfoAboutCourse = new CourseDto(studentCourse.getCourse());
+
+        // Obtener inscripciones (enrollments) relacionadas
+        this.enrollments = studentCourse.getEnrollments().stream()
+                .map(EnrollmentDto::new)
+                .collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -55,15 +61,7 @@ public class StudentCourseDto {
         return moreInfoAboutCourse;
     }
 
-//    public String getNameSubject() {
-//        return nameSubject;
-//    }
-//
-//    public String getYearCourse() {
-//        return yearCourse;
-//    }
-//
-//    public int getMaxCapacity() {
-//        return maxCapacity;
-//    }
+    public List<EnrollmentDto> getEnrollments() {
+        return enrollments;
+    }
 }

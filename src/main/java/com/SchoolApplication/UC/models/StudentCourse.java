@@ -27,6 +27,11 @@ public class StudentCourse {
     @JoinColumn(name = "course_id")
     private Course course;
 
+
+    @OneToMany(mappedBy = "studentCourse", fetch = FetchType.EAGER)
+    private Set<Enrollment> enrollments = new HashSet<>();
+
+
     @OneToMany(mappedBy = "studentCourse", fetch = FetchType.EAGER)
     private Set<Attendance> attendances = new HashSet<>();
 
@@ -95,6 +100,22 @@ public class StudentCourse {
 
     public void setMonthlyAttendancePercentage(double monthlyAttendancePercentage) {
         this.monthlyAttendancePercentage = monthlyAttendancePercentage;
+    }
+
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+
+
+    public void addEnrollment(Enrollment enrollment) {
+        enrollment.setStudentCourse(this);
+        enrollments.add(enrollment);
     }
 
 

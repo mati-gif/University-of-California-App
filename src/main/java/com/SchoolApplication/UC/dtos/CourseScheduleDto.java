@@ -13,11 +13,11 @@ public class CourseScheduleDto {
     private String dayOfWeek; // Renombrado en el modelo
     private String time;
 
-//    private Shift shift;
+    private Shift shift;
 //    private List<String> days;
 //    private List<String> times;
 
-//    private ScheduleDto moreInfoAboutSchedule;
+
 
     public CourseScheduleDto(CourseSchedule courseSchedule) {
         this.id = courseSchedule.getId();
@@ -25,12 +25,14 @@ public class CourseScheduleDto {
         this.dayOfWeek = courseSchedule.getDayOfWeek();
         this.time = courseSchedule.getTime();
 
-//        this.shift = courseSchedule.getSchedule().getShift();
+        this.shift = courseSchedule.getSchedule().getShift();
 //        this.days = courseSchedule.getSchedule().getDays();
 //        this.times = courseSchedule.getSchedule().getTimes();
 
 //        this.moreInfoAboutSchedule = new ScheduleDto(courseSchedule.getSchedule());
     }
+
+
 
     public Long getId() {
         return id;
@@ -53,9 +55,9 @@ public class CourseScheduleDto {
 //    }
 
 
-//        public Shift getShift() {
-//        return shift;
-//    }
+        public Shift getShift() {
+        return shift;
+    }
 //
 //    public List<String> getDays() {
 //        return days;

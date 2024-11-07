@@ -27,7 +27,8 @@ public class UcApplication {
 									  CourseScheduleRepository courseScheduleRepository,
 									  StudentCourseRepository studentCourseRepository,
 									  TeacherCourseRepository teacherCourseRepository,
-									  AttendanceRepository attendanceRepository) { // Define un bean de tipo CommandLineRunner que recibe un StudentRepository como parámetro.
+									  AttendanceRepository attendanceRepository,
+									  EnrollmentRepository enrollmentRepository) { // Define un bean de tipo CommandLineRunner que recibe un StudentRepository como parámetro.
 		// initData toma una instancia de StudentRepository como parámetro y utiliza este repositorio para guardar algunos clientes en la base de datos al iniciar la aplicación.
 		//Es un singleton que se ejecutan una vez cada vez que se inicia la aplicación.
 
@@ -109,9 +110,10 @@ public class UcApplication {
 
 			courseScheduleRepository.save(courseSchedule5);
 
-			CourseSchedule courseSchedule6 = new CourseSchedule("Tuesday and Thursday", "21:00 a 23:00");
-			course2.addCourseSchedule(courseSchedule6);
-			schedule3.addCourseSchedule(courseSchedule6);
+
+			CourseSchedule courseSchedule6 = new CourseSchedule("Monday and Wednesday", "10:00 a 12:00");
+			course3.addCourseSchedule(courseSchedule6);
+			schedule1.addCourseSchedule(courseSchedule6);
 
 			courseScheduleRepository.save(courseSchedule6);
 //--------------------------------------------------------------------------------
@@ -171,6 +173,34 @@ public class UcApplication {
 			course3.addStudentCourse(studentCourse6);
 
 			studentCourseRepository.save(studentCourse6);
+
+/////--------------------- Crear Enrollment y asociar a los StudentCourse y a los CourseSchedule     --------------//
+
+			Enrollment enrollment1 = new Enrollment("active");
+
+			studentCourse1.addEnrollment(enrollment1);
+			courseSchedule1.addEnrollment(enrollment1);
+
+			enrollmentRepository.save(enrollment1);
+
+			Enrollment enrollment2 = new Enrollment("active");
+
+			studentCourse2.addEnrollment(enrollment2);
+			courseSchedule5.addEnrollment(enrollment2);
+
+
+			enrollmentRepository.save(enrollment2);
+
+			Enrollment enrollment3 = new Enrollment("active");
+
+			studentCourse6.addEnrollment(enrollment3);
+			courseSchedule6.addEnrollment(enrollment3);
+
+			enrollmentRepository.save(enrollment3);
+
+
+
+
 
 /////--------------------- Crear TeacherCourse y asociar los Cursos al Profesor Miguel y Gonzalo     --------------//
 

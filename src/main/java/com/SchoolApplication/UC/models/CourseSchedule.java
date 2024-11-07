@@ -2,6 +2,9 @@ package com.SchoolApplication.UC.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 public class CourseSchedule {
 
@@ -19,6 +22,11 @@ public class CourseSchedule {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;//Esta seria la clave foranea de la tabla schedule
+
+
+    @OneToMany(mappedBy = "courseSchedule", fetch = FetchType.EAGER)
+    private Set<Enrollment> enrollments = new HashSet<>();
+
 
 
     public CourseSchedule(String dayOfWeek, String time) {
@@ -68,5 +76,18 @@ public class CourseSchedule {
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public Set<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(Set<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public void addEnrollment(Enrollment enrollment){
+        enrollment.setCourseSchedule(this);
+        enrollments.add(enrollment);
     }
 }
