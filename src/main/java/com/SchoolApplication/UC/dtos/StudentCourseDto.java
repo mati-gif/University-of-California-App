@@ -1,12 +1,12 @@
 package com.SchoolApplication.UC.dtos;
 
 
-import com.SchoolApplication.UC.models.Shift;
-import com.SchoolApplication.UC.models.Status;
-import com.SchoolApplication.UC.models.StudentCourse;
+import com.SchoolApplication.UC.models.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class StudentCourseDto {
@@ -16,9 +16,11 @@ public class StudentCourseDto {
     private LocalDateTime registrationDate;
     private Status status;
     private double monthlyAttendancePercentage;
-    private CourseDto moreInfoAboutCourse;
-    private List<EnrollmentDto> enrollments; // Cambiado a List<EnrollmentDto>
-//
+//    private CourseDto moreInfoAboutCourse;
+    private Set<CourseDto> moreInfoAboutCourse;
+    private Set<EnrollmentDto> enrollments; // Cambiado a List<EnrollmentDto>
+
+
 
 
 
@@ -29,12 +31,24 @@ public class StudentCourseDto {
         this.status = studentCourse.getStatus();
 
         this.monthlyAttendancePercentage = studentCourse.getMonthlyAttendancePercentage();
-        this.moreInfoAboutCourse = new CourseDto(studentCourse.getCourse());
+//        this.moreInfoAboutCourse = new CourseDto(studentCourse.getCourse());
+
+
+
+        this.moreInfoAboutCourse = convertCourseToDto(studentCourse.getCourse());
 
         // Obtener inscripciones (enrollments) relacionadas
-        this.enrollments = studentCourse.getEnrollments().stream()
+        this.enrollments = convertStudentCoursesToDto(studentCourse.getEnrollments());
+    }
+
+    private Set<EnrollmentDto> convertStudentCoursesToDto(Set<Enrollment> enrollments) {
+        return enrollments.stream()
                 .map(EnrollmentDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
+    }
+
+    private Set<CourseDto> convertCourseToDto(Course courses) {
+        return Collections.singleton(new CourseDto(courses));
     }
 
     public Long getId() {
@@ -57,11 +71,15 @@ public class StudentCourseDto {
         return monthlyAttendancePercentage;
     }
 
-    public CourseDto getMoreInfoAboutCourse() {
-        return moreInfoAboutCourse;
+//    public CourseDto getMoreInfoAboutCourse() {
+//        return moreInfoAboutCourse;
+//    }
+
+    public Set<EnrollmentDto> getEnrollments() {
+        return enrollments;
     }
 
-    public List<EnrollmentDto> getEnrollments() {
-        return enrollments;
+    public Set<CourseDto> getMoreInfoAboutCourse() {
+        return moreInfoAboutCourse;
     }
 }
