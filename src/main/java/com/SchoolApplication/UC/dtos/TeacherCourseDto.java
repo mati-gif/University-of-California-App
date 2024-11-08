@@ -12,7 +12,7 @@ public class TeacherCourseDto {
 
     private LocalDateTime assignmentDate;
     private RoleTeacher roleTeacher;
-    private TeacherDto teacher;
+    private TeacherBasicDto teacher;
 
 
     public TeacherCourseDto(TeacherCourse teacherCourse) {
@@ -20,7 +20,7 @@ public class TeacherCourseDto {
         this.assignmentDate = teacherCourse.getAssignmentDate();
         this.roleTeacher = teacherCourse.getRoleTeacher();
 
-        this.teacher = new TeacherDto(teacherCourse.getTeacher());
+        this.teacher = new TeacherBasicDto(teacherCourse.getTeacher());
     }
 
     public long getId() {
@@ -35,7 +35,7 @@ public class TeacherCourseDto {
         return roleTeacher;
     }
 
-    public TeacherDto getTeacher() {
+    public TeacherBasicDto getTeacher() {
         return teacher;
     }
 }

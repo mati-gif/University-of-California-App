@@ -16,7 +16,7 @@ public class CourseDto {
     private int maxCapacity;
 //    private Set<CourseScheduleDto> schedules = new HashSet<>();//aca se crea una variable privada de tipo Set<CourseScheduleDto> llamada courseScheduleDtos. Tambien se puede decir : Ceclara un set llamado courseScheduleDtos que tendra objetos de tipo CourseScheduleDto.
 
-    private Set<TeacherCourseDto> teacherCourses;
+//    private Set<TeacherCourseDto> teacherCourses;
 
 
 
@@ -31,7 +31,7 @@ public class CourseDto {
         System.out.println(course.getCourseSchedules() + " " +  "hola funciono el sout");
 
 //        this.schedules = convertCourseSchedulesToDto(course.getCourseSchedules());
-        this.teacherCourses = course.getTeacherCourses().stream().map(TeacherCourseDto::new).collect(Collectors.toSet());
+//        this.teacherCourses = course.getTeacherCourses().stream().map(TeacherCourseDto::new).collect(Collectors.toSet());
     }
 
     private Set<CourseScheduleDto> convertCourseSchedulesToDto(Set<CourseSchedule> schedules){
@@ -65,7 +65,7 @@ public class CourseDto {
         return maxCapacity;
     }
 
-    public Set<TeacherCourseDto> getTeacherCourses() {
-        return teacherCourses;
-    }
+//    public Set<TeacherCourseDto> getTeacherCourses() {
+//        return teacherCourses;
+//    }
 }
