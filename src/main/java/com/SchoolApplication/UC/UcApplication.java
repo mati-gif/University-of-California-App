@@ -98,22 +98,23 @@ public class UcApplication {
 
 // ↓↓↓↓↓↓↓  Course2 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
 //          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         //
-			CourseSchedule courseSchedule4 = new CourseSchedule("Monday and Thursday", "9:00 a 11:00");
+			CourseSchedule courseSchedule4 = new CourseSchedule("Tuesday and Thursday", "10:00 a 12:00");
 			course2.addCourseSchedule(courseSchedule4);
 			schedule1.addCourseSchedule(courseSchedule4);
 
 			courseScheduleRepository.save(courseSchedule4);
 
-			CourseSchedule courseSchedule5 = new CourseSchedule("Wednesday and Friday", "15:00 a 17:00");
+			CourseSchedule courseSchedule5 = new CourseSchedule("Tuesday and Thursday", "16:00 a 18:00");
 			course2.addCourseSchedule(courseSchedule5);
 			schedule2.addCourseSchedule(courseSchedule5);
 
 			courseScheduleRepository.save(courseSchedule5);
 
 
-			CourseSchedule courseSchedule6 = new CourseSchedule("Monday and Wednesday", "10:00 a 12:00");
+			//course 3 : =>=>=>=> CHIMISTRY
+			CourseSchedule courseSchedule6 = new CourseSchedule("Tuesday and Friday", "20:00 a 22:00");
 			course3.addCourseSchedule(courseSchedule6);
-			schedule1.addCourseSchedule(courseSchedule6);
+			schedule3.addCourseSchedule(courseSchedule6);
 
 			courseScheduleRepository.save(courseSchedule6);
 //--------------------------------------------------------------------------------
@@ -176,6 +177,7 @@ public class UcApplication {
 
 /////--------------------- Crear Enrollment y asociar a los StudentCourse y a los CourseSchedule     --------------//
 
+			//Para Melba:
 			Enrollment enrollment1 = new Enrollment("active");
 
 			studentCourse1.addEnrollment(enrollment1);
@@ -199,6 +201,19 @@ public class UcApplication {
 			enrollmentRepository.save(enrollment3);
 
 
+			//Para Chloe: asociando a Chloe con Fisica y con el turnno de la tarde  de 16 a 18 los Tuesday and Thursday
+			Enrollment enrollment4 = new Enrollment("active ES ESTEEEE");
+			studentCourse5.addEnrollment(enrollment4);
+			courseSchedule5.addEnrollment(enrollment4);
+
+			enrollmentRepository.save(enrollment4);
+
+			//Para Chloe: asociando a Chloe con Matematicas y con el turnno de la tarde  de 14 a 16 los Monday and Friday
+			Enrollment enrollment5 = new Enrollment("active Funcionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			studentCourse4.addEnrollment(enrollment5);
+			courseSchedule2.addEnrollment(enrollment5);
+
+			enrollmentRepository.save(enrollment5);
 
 
 
@@ -236,7 +251,7 @@ public class UcApplication {
 			// ↓↓↓↓↓↓↓  Teacher2 junto con course1, course2 y course3 ↓↓↓↓↓↓↓
 //          		 	¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯            //
 
-			TeacherCourse teacherCourse4 = new TeacherCourse(now,RoleTeacher.MAIN);
+			TeacherCourse teacherCourse4 = new TeacherCourse(now,RoleTeacher.ASSISTANT);
 			teacher2.addTeacherCourse(teacherCourse4);
 			course1.addTeacherCourse(teacherCourse4);
 
@@ -244,7 +259,7 @@ public class UcApplication {
 			teacherCourseRepository.save(teacherCourse4);
 
 
-			TeacherCourse teacherCourse5 = new TeacherCourse(now,RoleTeacher.ASSISTANT);
+			TeacherCourse teacherCourse5 = new TeacherCourse(now,RoleTeacher.MAIN);
 			teacher2.addTeacherCourse(teacherCourse5);
 			course2.addTeacherCourse(teacherCourse5);
 
@@ -252,7 +267,7 @@ public class UcApplication {
 			teacherCourseRepository.save(teacherCourse5);
 
 
-			TeacherCourse teacherCourse6 = new TeacherCourse(now,RoleTeacher.COLLABORATOR);
+			TeacherCourse teacherCourse6 = new TeacherCourse(now,RoleTeacher.MAIN);
 			teacher2.addTeacherCourse(teacherCourse6);
 			course3.addTeacherCourse(teacherCourse6);
 
