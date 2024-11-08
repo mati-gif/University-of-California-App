@@ -2,6 +2,7 @@ package com.SchoolApplication.UC.dtos;
 
 import com.SchoolApplication.UC.models.Course;
 import com.SchoolApplication.UC.models.CourseSchedule;
+import com.SchoolApplication.UC.models.TeacherCourse;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,8 @@ public class CourseDto {
     private String yearCourse;
     private int maxCapacity;
 //    private Set<CourseScheduleDto> schedules = new HashSet<>();//aca se crea una variable privada de tipo Set<CourseScheduleDto> llamada courseScheduleDtos. Tambien se puede decir : Ceclara un set llamado courseScheduleDtos que tendra objetos de tipo CourseScheduleDto.
+
+    private Set<TeacherCourseDto> teacherCourses;
 
 
 
@@ -28,7 +31,7 @@ public class CourseDto {
         System.out.println(course.getCourseSchedules() + " " +  "hola funciono el sout");
 
 //        this.schedules = convertCourseSchedulesToDto(course.getCourseSchedules());
-
+        this.teacherCourses = course.getTeacherCourses().stream().map(TeacherCourseDto::new).collect(Collectors.toSet());
     }
 
     private Set<CourseScheduleDto> convertCourseSchedulesToDto(Set<CourseSchedule> schedules){
@@ -60,5 +63,9 @@ public class CourseDto {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public Set<TeacherCourseDto> getTeacherCourses() {
+        return teacherCourses;
     }
 }

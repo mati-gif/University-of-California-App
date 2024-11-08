@@ -19,7 +19,7 @@ public class StudentCourseDto {
 //    private CourseDto moreInfoAboutCourse;
     private Set<CourseDto> moreInfoAboutCourse;
     private Set<EnrollmentDto> enrollments; // Cambiado a List<EnrollmentDto>
-    private Set<TeacherCourseDto> teacherCourses;
+//    private Set<TeacherCourseDto> teacherCourses;
 
 
 
@@ -34,7 +34,7 @@ public class StudentCourseDto {
         this.monthlyAttendancePercentage = studentCourse.getMonthlyAttendancePercentage();
 //        this.moreInfoAboutCourse = new CourseDto(studentCourse.getCourse());
 
-        this.teacherCourses = studentCourse.getCourse().getTeacherCourses().stream().map(TeacherCourseDto::new).collect(Collectors.toSet());
+//        this.teacherCourses = studentCourse.getCourse().getTeacherCourses().stream().map(TeacherCourseDto::new).collect(Collectors.toSet());
 
         this.moreInfoAboutCourse = convertCourseToDto(studentCourse.getCourse());
 
@@ -84,7 +84,7 @@ public class StudentCourseDto {
         return moreInfoAboutCourse;
     }
 
-    public Set<TeacherCourseDto> getTeacherCourses() {
-        return teacherCourses;
-    }
+//    public Set<TeacherCourseDto> getTeacherCourses() {
+//        return teacherCourses;
+//    }
 }

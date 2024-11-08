@@ -1,7 +1,10 @@
 package com.SchoolApplication.UC.controllers;
 
+import com.SchoolApplication.UC.dtos.TeacherCourseDto;
 import com.SchoolApplication.UC.dtos.TeacherDto;
 import com.SchoolApplication.UC.models.Teacher;
+import com.SchoolApplication.UC.models.TeacherCourse;
+import com.SchoolApplication.UC.repositories.TeacherCourseRepository;
 import com.SchoolApplication.UC.repositories.TeacherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,8 @@ public class TeacherController {
     @Autowired
     TeacherRepository teacherRepository;
 
+
+
     @GetMapping("/")
     public ResponseEntity<?> getAllTeachers() {
         List<Teacher> allTeachers = teacherRepository.findAll();
@@ -35,6 +40,8 @@ public class TeacherController {
 
         return new ResponseEntity<>(teachers, HttpStatus.OK);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTeacherById(@PathVariable Long id) {
