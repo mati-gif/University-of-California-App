@@ -23,6 +23,17 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.hibernate:hibernate-entitymanager:5.6.3.Final' //Esta dependencia incluye Hibernate EntityManager, que es una implementación de JPA.
+
+	implementation 'org.springframework.boot:spring-boot-starter-security' //proporciona soporte para la seguridad en aplicaciones Spring Boot. Incluye configuraciones básicas y dependencias para autenticación y autorización.
+
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.5' //Esta dependencia proporciona la API de JJWT (JSON Web Token).JJWT es una biblioteca para crear y validar tokens JWT
+
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5' //Esta dependencia es la implementación concreta de JJWT. Se utiliza en tiempo de ejecución para procesar los tokens JWT.
+
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'//Esta dependencia proporciona el soporte de serialización/deserialización de JSON usando Jackson para los tokens JWT.
+	// Permite convertir objetos Java a JSON y viceversa en el contexto de JJWT
 }
 
 tasks.named('test') {
