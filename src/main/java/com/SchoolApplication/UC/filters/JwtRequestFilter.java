@@ -323,7 +323,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 }
             }
         }catch (Exception e){
-            System.out.println(e.getMessage());
+//            System.out.println(e.getMessage());
+            // En lugar de solo imprimir el error, devuelves un 401 Unauthorized
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "El token JWT no es válido o ha expirado.");
 
             // esto quiere decir que se va a ejecutar siempre
         } finally { //vamos a aplicar el filterChain que recibimos como parametro para que continue con la siguiente cadena de filtros pasandole la peticion y la respuesta
