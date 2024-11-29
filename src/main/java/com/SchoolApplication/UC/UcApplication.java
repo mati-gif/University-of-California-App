@@ -2,10 +2,12 @@ package com.SchoolApplication.UC;
 
 import com.SchoolApplication.UC.models.*;
 import com.SchoolApplication.UC.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -13,6 +15,8 @@ import java.util.Arrays;
 @SpringBootApplication
 public class UcApplication {
 
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	public static void main(String[] args) {
 		SpringApplication.run(UcApplication.class, args);
 	}
@@ -35,16 +39,16 @@ public class UcApplication {
 		return (args) -> {
 
 			// Create students
-			Student student1 = new Student ("Melba","Morel","M.morel@me.com","123");
-			Student student2 = new Student("Chloe", "O'Brian", "c.obrian@me.com", "456");
+			Student student1 = new Student ("Melba","Morel","M.morel@me.com",passwordEncoder.encode("123"));
+			Student student2 = new Student("Chloe", "O'Brian", "c.obrian@me.com", passwordEncoder.encode("456"));
 
 			studentRepository.save(student1);
 			studentRepository.save(student2);
 
 
 			// Create teachers
-			Teacher teacher1 = new Teacher("Miguel", "Hernandez", "m.hernandez@me.com", "789");
-			Teacher teacher2 = new Teacher("Gonzalo", "Gonzalez", "g.gonzalez@me.com", "987");
+			Teacher teacher1 = new Teacher("Miguel", "Hernandez", "m.hernandez@me.com", passwordEncoder.encode("789"));
+			Teacher teacher2 = new Teacher("Gonzalo", "Gonzalez", "g.gonzalez@me.com", passwordEncoder.encode("987"));
 
 			teacherRepository.save(teacher1);
 			teacherRepository.save(teacher2);
