@@ -47,8 +47,8 @@ public class UcApplication {
 
 
 			// Create teachers
-			Teacher teacher1 = new Teacher("Miguel", "Hernandez", "m.hernandez@me.com", passwordEncoder.encode("789"));
-			Teacher teacher2 = new Teacher("Gonzalo", "Gonzalez", "g.gonzalez@me.com", passwordEncoder.encode("987"));
+			Teacher teacher1 = new Teacher("Miguel", "Hernandez", "m.hernandez@education.com", passwordEncoder.encode("789"));
+			Teacher teacher2 = new Teacher("Gonzalo", "Gonzalez", "g.gonzalez@edu.com", passwordEncoder.encode("987"));
 
 			teacherRepository.save(teacher1);
 			teacherRepository.save(teacher2);

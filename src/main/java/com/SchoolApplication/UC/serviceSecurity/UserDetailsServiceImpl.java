@@ -25,8 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        // 1. Buscar si es un estudiante
+////        // 1. Buscar si es un estudiante
 //        Student student = studentRepository.findByEmail(username);
+//        Teacher teacher = teacherRepository.findByEmail(username);
 //
 //        if (student == null) {
 //            throw new UsernameNotFoundException("User not found with email: " + username);
@@ -40,6 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //                    .build();
 //        }
 //
+//
 //        return
 //                User
 //                        .withUsername(username)
@@ -48,58 +50,57 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //                        .build();
 
         //opcion 2:
-//        Student student = studentRepository.findByEmail(username);
-//        if (student != null) {
-//            // Verificar si el email contiene "admin"
-//            if (student.getEmail().contains("admin")) {
-//                return User
-//                        .withUsername(username)
-//                        .password(student.getPassword())
-//                        .roles("ADMIN")
-//                        .build();
+        Student student = studentRepository.findByEmail(username);
+        if (student != null) {
+            // Verificar si el email contiene "admin"
+            if (student.getEmail().contains("admin")) {
+                return User
+                        .withUsername(username)
+                        .password(student.getPassword())
+                        .roles("ADMIN")
+                        .build();
+            }
+
+            // Si no contiene "admin", asignar el rol de STUDENT
+            return User
+                    .withUsername(username)
+                    .password(student.getPassword())
+                    .roles("STUDENT")
+                    .build();
+        }
+
+        // 2. Si no es estudiante, buscar si es un profesor
+        Teacher teacher = teacherRepository.findByEmail(username);
+
+        if (teacher != null) {
+            // Verificar si el email contiene "admin"
+            if (teacher.getEmail().contains("admin")) {
+                return User
+                        .withUsername(username)
+                        .password(teacher.getPassword())
+                        .roles("ADMIN")
+                        .build();
+            }
+
+//            // Verificar si el email contiene "teacher"
+//            if (teacher.getEmail().contains("teacher")) {
+                return User
+                        .withUsername(username)
+                        .password(teacher.getPassword())
+                        .roles("TEACHER")
+                        .build();
 //            }
-//
-//            // Si no contiene "admin", asignar el rol de STUDENT
+
+//            // Si no contiene ninguna palabra clave, asignar el rol de STUDENT
 //            return User
 //                    .withUsername(username)
-//                    .password(student.getPassword())
+//                    .password(teacher.getPassword())
 //                    .roles("STUDENT")
 //                    .build();
-//        }
-//
-//        // 2. Si no es estudiante, buscar si es un profesor
-//        Teacher teacher = teacherRepository.findByEmail(username);
-//
-//        if (teacher != null) {
-//            // Verificar si el email contiene "admin"
-//            if (teacher.getEmail().contains("admin")) {
-//                return User
-//                        .withUsername(username)
-//                        .password(teacher.getPassword())
-//                        .roles("ADMIN")
-//                        .build();
-//            }
-//
-////            // Verificar si el email contiene "teacher"
-////            if (teacher.getEmail().contains("teacher")) {
-//                return User
-//                        .withUsername(username)
-//                        .password(teacher.getPassword())
-//                        .roles("TEACHER")
-//                        .build();
-////            }
-//
-////            // Si no contiene ninguna palabra clave, asignar el rol de STUDENT
-////            return User
-////                    .withUsername(username)
-////                    .password(teacher.getPassword())
-////                    .roles("STUDENT")
-////                    .build();
-//        }
-//
-//        // 3. Si no es estudiante ni profesor, lanzar una excepción
-//        throw new UsernameNotFoundException("User not found with email: " + username);
+        }
 
+        // 3. Si no es estudiante ni profesor, lanzar una excepción
+        throw new UsernameNotFoundException("User not found with email: " + username);
 
 
 //opcion 3:
@@ -124,50 +125,90 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         //opcion 4 :
 
-        // 1. Buscar si es un estudiante
-        Student student = studentRepository.findByEmail(username);
-        if (student != null) {
-            System.out.println("Entro por el primer if " + student);
-            if (student.getEmail().contains("admin")) {
-                System.out.println("entro por el segundo if" + student.getEmail());
+//        // 1. Buscar si es un estudiante
+//        Student student = studentRepository.findByEmail(username);
+//        if (student != null) {
+//            System.out.println("Entro por el primer if " + student);
+//            if (student.getEmail().contains("admin")) {
+//                System.out.println("entro por el segundo if" + student.getEmail());
+//
+//                System.out.println("el rol del usuario es : " + User.withUsername(username).password(student.getPassword()).roles("ADMIN").build());
+//
+//                return User
+//                        .withUsername(username)
+//                        .password(student.getPassword())
+//                        .roles("ADMIN")
+//                        .build();
+//
+//            }
+//            System.out.println("el rol del usuario es : " + User.withUsername(username).password(student.getPassword()).roles("STUDENT").build());
+//
+//            return User
+//                    .withUsername(username)
+//                    .password(student.getPassword())
+//                    .roles("STUDENT")
+//                    .build();
+//
+//        }
+//        System.out.println("el rol del usuario sigue siendo : " + User.withUsername(username).password(student.getPassword()).roles("STUDENT").build());
+//
+//        // 2. Buscar si es un profesor
+//        Teacher teacher = teacherRepository.findByEmail(username);
+//        if (teacher != null) {
+//            if (teacher.getEmail().contains("teacher")) {
+//                return User
+//                        .withUsername(username)
+//                        .password(teacher.getPassword())
+//                        .roles("TEACHER")
+//                        .build();
+//            }
+//
+//            // Puedes manejar otros roles aquí si es necesario para profesores sin "teacher" en el email.
+//        }
+//
+//        throw new UsernameNotFoundException("User not found with email: " + username);
 
-                System.out.println("el rol del usuario es : " + User.withUsername(username).password(student.getPassword()).roles("ADMIN").build());
 
-                return User
-                        .withUsername(username)
-                        .password(student.getPassword())
-                        .roles("ADMIN")
-                        .build();
+        //opcion 5:
+//        Student student = studentRepository.findByEmail(username);
+//        Teacher teacher = teacherRepository.findByEmail(username);
+//
+//        if (student == null && teacher == null) {
+//            throw new UsernameNotFoundException("User not found with email: " + username);
+//        }
+//
+//        if (teacher != null && teacher.getEmail().contains("teacher")) {
+//            System.out.println("aca el rol es:" + username);
+//            return User
+//                    .withUsername(username)
+//                    .password(teacher.getPassword())
+//                    .roles("TEACHER")
+//                    .build();
+//        } else if (student != null && student.getEmail().contains("admin")) {
+//            System.out.println("Ahora el rol aca  es:" + username);
+//
+//            return User
+//                    .withUsername(username)
+//                    .password(student.getPassword())
+//                    .roles("ADMIN")
+//                    .build();
+//        }
+//        else if (student != null) {
+//            return User
+//                    .withUsername(username)
+//                    .password(student.getPassword())
+//                    .roles("STUDENT")
+//                    .build();
+//        }
+//        System.out.println("pero aca el rol es:" + username);
+//
+//        throw new UsernameNotFoundException("User not found with email: " + username);
 
-            }
-            System.out.println("el rol del usuario es : " + User.withUsername(username).password(student.getPassword()).roles("STUDENT").build());
 
-            return User
-                    .withUsername(username)
-                    .password(student.getPassword())
-                    .roles("STUDENT")
-                    .build();
-
-        }
-        System.out.println("el rol del usuario es : " + User.withUsername(username).password(student.getPassword()).roles("STUDENT").build());
-
-        // 2. Buscar si es un profesor
-        Teacher teacher = teacherRepository.findByEmail(username);
-        if (teacher != null) {
-            if (teacher.getEmail().contains("teacher")) {
-                return User
-                        .withUsername(username)
-                        .password(teacher.getPassword())
-                        .roles("TEACHER")
-                        .build();
-            }
-
-            // Puedes manejar otros roles aquí si es necesario para profesores sin "teacher" en el email.
-        }
-
-        throw new UsernameNotFoundException("User not found with email: " + username);
-
-
+//        return User
+//                .withUsername(username)
+//                .password(student.getPassword())
+//                .roles("STUDENT")
+//                .build();
     }
-
 }
