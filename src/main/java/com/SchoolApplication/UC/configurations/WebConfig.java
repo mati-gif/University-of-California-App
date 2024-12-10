@@ -368,17 +368,21 @@ public class WebConfig {
                 .authorizeHttpRequests(authorize ->
                                 authorize// aca estamos autorizando a que ruta le puede pegar y con que rol cuando se hace una peticion.
                                         //permitAll() es para que todos los usuarios puedan acceder a la ruta.
-                                        //Es decir: Permite el acceso sin autenticación a las rutas /api/auth/login, /api/auth/register, y cualquier ruta que comience con h2-console/.
-                                        .requestMatchers("/api/auth/login","/api/auth/register").permitAll()//permitAll(): Indica que cualquier persona, autenticada o no, puede acceder a estas rutas. Estas rutas están abiertas para todos los usuarios, sin necesidad de autenticación.
 
-                                        .requestMatchers("/api/student/","/api/student/**","/api/teacher/**","/api/teacher/","/api/schedule/","/api/schedule/**","/api/course/","/api/course/**","/api/attendance/","/api/attendance/**").permitAll()//Indica que solo los usuarios que tengan el rol ADMIN pueden acceder a esta ruta.
+
+                                        .requestMatchers("/api/current","/api/course/","/api/course/**","/api/schedule/","/api/schedule/**","/api/teacher/**","/api/teacher/","/api/attendance/","/api/attendance/**").hasRole("STUDENT")//Indican que solo los usuarios que tengan el rol de "CLIENT" ,antes autenticados,puede acceder a esa ruta
+
+
+                                        //Es decir: Permite el acceso sin autenticación a las rutas /api/auth/login, /api/auth/register, y cualquier ruta que comience con h2-console/.
+                                        .requestMatchers("/api/auth/login","/api/auth/register","/api/auth/register/teacher").permitAll()//permitAll(): Indica que cualquier persona, autenticada o no, puede acceder a estas rutas. Estas rutas están abiertas para todos los usuarios, sin necesidad de autenticación.
+
+                                        .requestMatchers("/api/student/","/api/student/**","/api/teacher/**","/api/teacher/","/api/schedule/","/api/schedule/**","/api/course/","/api/course/**","/api/attendance/","/api/attendance/**").hasRole("ADMIN")//Indica que solo los usuarios que tengan el rol ADMIN pueden acceder a esta ruta.
                                         // Pero, para que se pueda evaluar si un usuario tiene este rol, debe estar autenticado.
                                         // Así que, en la práctica, esta ruta solo es accesible para usuarios autenticados con el rol ADMIN.
                                         ///api/accounts/**": Cualquier ruta que comience con /api/accounts/ (y continúe con cualquier subruta) solo será accesible para usuarios con el rol ADMIN.
 
-                                        .requestMatchers("/api/current","/api/course/","/api/course/**","/api/schedule/","/api/schedule/**","/api/teacher/**","/api/teacher/","/api/attendance/","/api/attendance/**").hasRole("STUDENT")//Indican que solo los usuarios que tengan el rol de "CLIENT" ,antes autenticados,puede acceder a esa ruta
 
-                                        .requestMatchers("/api/current","/api/course/","/api/course/**","/api/schedule/","/api/schedule/**","/api/student/","/api/student/**","/api/attendance/","/api/attendance/**").hasRole("STUDENT")//Indican que solo los usuarios que tengan el rol de "CLIENT" ,antes autenticados,puede acceder a esa ruta
+                                        .requestMatchers("/api/current/teacher","/api/course/","/api/course/**","/api/schedule/","/api/schedule/**","/api/student/","/api/student/**","/api/attendance/","/api/attendance/**").hasRole("TEACHER")//Indican que solo los usuarios que tengan el rol de "CLIENT" ,antes autenticados,puede acceder a esa ruta
 
                                         .anyRequest().authenticated()//: Cualquier solicitud que se haga para acceder a alguna otra ruta
                         // que no esta expecificada arriba tambienn el usuario tiene que estar autentucado.

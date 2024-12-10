@@ -3,8 +3,11 @@ package com.SchoolApplication.UC.controllers;
 import com.SchoolApplication.UC.dtos.LoginDto;
 import com.SchoolApplication.UC.dtos.RegisterDto;
 import com.SchoolApplication.UC.dtos.StudentDto;
+import com.SchoolApplication.UC.dtos.TeacherDto;
 import com.SchoolApplication.UC.models.Student;
+import com.SchoolApplication.UC.models.Teacher;
 import com.SchoolApplication.UC.repositories.StudentRepository;
+import com.SchoolApplication.UC.repositories.TeacherRepository;
 import com.SchoolApplication.UC.serviceSecurity.JwtUtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +28,9 @@ public class AuthController {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;//para manejar la autenticacion cuando se haga el login.
@@ -119,7 +125,7 @@ public class AuthController {
 
         studentRepository.save(student);
 
-        return new ResponseEntity<>("Client created",HttpStatus.CREATED);
+        return new ResponseEntity<>("User created",HttpStatus.CREATED);
     }
 
 
@@ -143,6 +149,53 @@ public class AuthController {
         // se asegura que solo los usuarios autenticados puedan acceder a este endpoint.
         // Si alguien no está autenticado y trata de acceder a /api/auth/current,
         // recibiría una respuesta con un error de autenticación (por ejemplo, 401 Unauthorized).
+
+    }
+
+
+    @PostMapping("/register/teacher")
+    public ResponseEntity<?> registerTeacher(@RequestBody RegisterDto registerDto){
+
+        if(registerDto.firstName().isBlank() ){
+            return new ResponseEntity<>("the name field must not be empty",HttpStatus.FORBIDDEN);
+        }
+        if (registerDto.lastName().isBlank()){
+            return new ResponseEntity<>("the last name field must not be empty",HttpStatus.FORBIDDEN);
+        }
+        if (registerDto.email().isBlank()){
+            return new ResponseEntity<>("the email field must not be empty",HttpStatus.FORBIDDEN);
+        }
+        if(registerDto.password().isBlank()){
+            return new ResponseEntity<>("the password field must not be empty",HttpStatus.FORBIDDEN);
+        }
+
+        // Verificar si el correo electrónico ya está registrado
+        if (teacherRepository.findByEmail(registerDto.email()) != null) {
+            return new ResponseEntity<>("Email is already in use", HttpStatus.CONFLICT);
+        }
+
+        Teacher teacher = new Teacher(
+                registerDto.firstName(),
+                registerDto.lastName(),
+                registerDto.email(),
+                passwordEncoder.encode(registerDto.password()));
+
+        teacherRepository.save(teacher);
+
+        return new ResponseEntity<>("User created",HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/current/teacher")//metodo para obtener el cliente autenticado (es decir que ya esta logueado)
+//este metodo recibe como parametro un Authentication que es el cliente autenticado, es decir el que se acaba de loguear.
+    public ResponseEntity<?> getTeacherCurrent(Authentication authentication){
+
+        //vamos a acceder al metodo findByEmail() que esta en clientRepository  para buscar ese cliente por su email (en la base de datos)
+        // y del authentication (que es el usuario logueado es decir autenticado) vamos a obtener el nombre , ese nombre es el email.
+        // Una vez que lo obtenemos vamos a guardarlo en una viariable client de tipo Client
+        Teacher teacher = teacherRepository.findByEmail(authentication.getName());
+        //despues va a retornar un ResponseEntity con el client y el status OK
+        return new ResponseEntity<>( new TeacherDto(teacher),HttpStatus.OK);
 
     }
 }
