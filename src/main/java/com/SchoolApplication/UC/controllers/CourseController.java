@@ -2,15 +2,22 @@ package com.SchoolApplication.UC.controllers;
 
 import com.SchoolApplication.UC.dtos.CourseDto;
 import com.SchoolApplication.UC.dtos.CourseDtoForCourseController;
+import com.SchoolApplication.UC.dtos.CourseScheduleDto;
+import com.SchoolApplication.UC.dtos.CreateCourseDto;
 import com.SchoolApplication.UC.models.Course;
+import com.SchoolApplication.UC.models.CourseSchedule;
+import com.SchoolApplication.UC.models.Schedule;
+import com.SchoolApplication.UC.models.Student;
 import com.SchoolApplication.UC.repositories.CourseRepository;
+import com.SchoolApplication.UC.repositories.CourseScheduleRepository;
+import com.SchoolApplication.UC.repositories.ScheduleRepository;
+import com.SchoolApplication.UC.repositories.StudentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +28,17 @@ public class CourseController {
 
     @Autowired
     CourseRepository courseRepository;
+
+
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    CourseScheduleRepository courseScheduleRepository;
+
+
+    @Autowired
+    ScheduleRepository scheduleRepository;
 
     @RequestMapping("/hello")
     public String hello() {
@@ -67,6 +85,7 @@ public class CourseController {
 
 
         System.out.println(allCourse + " " + "aca tambien deberian estar los cursos");
+
         List<CourseDtoForCourseController> allCoursesDtoForCourseController = allCourse.stream()
                 .map(CourseDtoForCourseController::new)
                 .collect(Collectors.toList());
@@ -81,5 +100,98 @@ public class CourseController {
 
         return new ResponseEntity<>(allCoursesDtoForCourseController, HttpStatus.OK);
     }
+
+    @Transactional
+     @PostMapping("/create")
+        public ResponseEntity<?> createCourse(Authentication authentication,
+                                              @RequestBody CreateCourseDto createCourseDto) {
+
+
+         try{
+
+//             if(createCourseDto.nameSubject().isEmpty() || createCourseDto.nameSubject() == null) {
+//                 return new ResponseEntity<>("Course name is required", HttpStatus.BAD_REQUEST);
+//
+//             }
+//             if (createCourseDto.yearCourse().isEmpty() || createCourseDto.yearCourse() == null) {
+//                 return new ResponseEntity<>("Course year is required", HttpStatus.BAD_REQUEST);
+//             }
+//
+//             if (createCourseDto.maxCapacity() <= 0 || createCourseDto.maxCapacity() == null) {
+//                 return new ResponseEntity<>("Course max capacity is required and must be greater than 0", HttpStatus.BAD_REQUEST);
+//             }
+             Student student = studentRepository.findByEmail(authentication.getName());
+
+
+             Course course = new Course();
+             course.setNameSubject(createCourseDto.nameSubject());
+             course.setYearCourse(createCourseDto.yearCourse());
+             course.setMaxCapacity(createCourseDto.maxCapacity());
+             courseRepository.save(course);
+//
+//             // Crear y asociar los horarios
+//             for (CourseScheduleDto scheduleDto : createCourseDto.schedules()) {
+//                 // Validar que el turno existe
+//                 Schedule schedule = scheduleRepository.findById(scheduleDto.getScheduleId())
+//                         .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
+//
+//                 CourseSchedule courseSchedule = new CourseSchedule();
+//                 courseSchedule.setDayOfWeek(scheduleDto.getDayOfWeek());
+//                 courseSchedule.setTime(scheduleDto.getTime());
+//                 courseSchedule.setSchedule(schedule);
+//
+//                 course.addCourseSchedule(courseSchedule);
+//                 schedule.addCourseSchedule(courseSchedule);
+//
+//                 courseScheduleRepository.save(courseSchedule);
+//             }
+//             courseRepository.save(course);
+//             // Crear respuesta
+//             CourseDtoForCourseController response = new CourseDtoForCourseController(course);
+
+
+             // Crear el curso
+//             Course course = new Course();
+//             course.setNameSubject(courseDtoForCourseController.getNameSubject());
+//             course.setYearCourse(courseDtoForCourseController.getYearCourse());
+//             course.setMaxCapacity(courseDtoForCourseController.getMaxCapacity());
+//             // Guardar el curso
+//             courseRepository.save(course);
+
+//             // Crear y asociar los horarios
+//             for (CourseScheduleDto courseScheduleDto : courseDtoForCourseController.getSchedules()) {
+//                 // Validar que el turno existe
+//                 Schedule schedule = scheduleRepository.findById(courseScheduleDto.getScheduleId())
+//                         .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
+//
+//                 CourseSchedule courseSchedule = new CourseSchedule();
+//                 courseSchedule.setDayOfWeek(courseScheduleDto.getDayOfWeek());
+//                 courseSchedule.setTime(courseScheduleDto.getTime());
+//                 courseSchedule.setSchedule(schedule);
+//
+//                 course.addCourseSchedule(courseSchedule);
+//                 schedule.addCourseSchedule(courseSchedule);
+//
+//                 courseScheduleRepository.save(courseSchedule);
+//             }
+//
+//             // Guardar el curso
+//             courseRepository.save(course);
+//
+//             // Crear respuesta
+//             CourseDtoForCourseController response = new CourseDtoForCourseController(course);
+             return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
+
+         }catch (Exception e){
+
+
+             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+         }
+
+
+
+        }
+
+
 
 }
