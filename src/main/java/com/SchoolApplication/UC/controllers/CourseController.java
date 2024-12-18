@@ -109,78 +109,70 @@ public class CourseController {
 
          try{
 
-//             if(createCourseDto.nameSubject().isEmpty() || createCourseDto.nameSubject() == null) {
-//                 return new ResponseEntity<>("Course name is required", HttpStatus.BAD_REQUEST);
-//
-//             }
-//             if (createCourseDto.yearCourse().isEmpty() || createCourseDto.yearCourse() == null) {
-//                 return new ResponseEntity<>("Course year is required", HttpStatus.BAD_REQUEST);
-//             }
-//
-//             if (createCourseDto.maxCapacity() <= 0 || createCourseDto.maxCapacity() == null) {
-//                 return new ResponseEntity<>("Course max capacity is required and must be greater than 0", HttpStatus.BAD_REQUEST);
-//             }
-             Student student = studentRepository.findByEmail(authentication.getName());
+             if(createCourseDto.nameSubject().isEmpty() || createCourseDto.nameSubject() == null) {
+                 return new ResponseEntity<>("Course name is required", HttpStatus.BAD_REQUEST);
 
+             }
+             if (createCourseDto.yearCourse().isEmpty() || createCourseDto.yearCourse() == null) {
+                 return new ResponseEntity<>("Course year is required", HttpStatus.BAD_REQUEST);
+             }
+
+             if (createCourseDto.maxCapacity() <= 0 || createCourseDto.maxCapacity() == null) {
+                 return new ResponseEntity<>("Course max capacity is required and must be greater than 0", HttpStatus.BAD_REQUEST);
+             }
+
+             // Validar el horario y el dia de la semana
+             if (createCourseDto.dayOfWeek() == null || createCourseDto.dayOfWeek().isEmpty()) {
+                 return new ResponseEntity<>("Day of week is required", HttpStatus.BAD_REQUEST);
+             }
+
+             if (createCourseDto.time() == null || createCourseDto.time().isEmpty()) {
+                 return new ResponseEntity<>("Time is required", HttpStatus.BAD_REQUEST);
+             }
+             if (createCourseDto.scheduleId() == null) {
+                 return new ResponseEntity<>("Schedule ID is required", HttpStatus.BAD_REQUEST);
+             }
+             Student student = studentRepository.findByEmail(authentication.getName());
+             Schedule schedule = scheduleRepository.findScheduleById(createCourseDto.scheduleId());
+
+
+
+             if (schedule == null) {
+                 return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
+             }
+
+
+             int countQuantityCourses = courseRepository.countByNameSubjectAndCourseIdAndScheduleId(
+                     createCourseDto.nameSubject());
+
+             if (countQuantityCourses == 1 ){
+                 return new ResponseEntity<>("Course already exists with nameSubject" + createCourseDto.nameSubject()
+                         + "please create another with diferent nameSubject", HttpStatus.BAD_REQUEST);
+             }
 
              Course course = new Course();
              course.setNameSubject(createCourseDto.nameSubject());
              course.setYearCourse(createCourseDto.yearCourse());
              course.setMaxCapacity(createCourseDto.maxCapacity());
              courseRepository.save(course);
-//
-//             // Crear y asociar los horarios
-//             for (CourseScheduleDto scheduleDto : createCourseDto.schedules()) {
-//                 // Validar que el turno existe
-//                 Schedule schedule = scheduleRepository.findById(scheduleDto.getScheduleId())
-//                         .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
-//
-//                 CourseSchedule courseSchedule = new CourseSchedule();
-//                 courseSchedule.setDayOfWeek(scheduleDto.getDayOfWeek());
-//                 courseSchedule.setTime(scheduleDto.getTime());
-//                 courseSchedule.setSchedule(schedule);
-//
-//                 course.addCourseSchedule(courseSchedule);
-//                 schedule.addCourseSchedule(courseSchedule);
-//
-//                 courseScheduleRepository.save(courseSchedule);
-//             }
-//             courseRepository.save(course);
-//             // Crear respuesta
-//             CourseDtoForCourseController response = new CourseDtoForCourseController(course);
 
 
-             // Crear el curso
-//             Course course = new Course();
-//             course.setNameSubject(courseDtoForCourseController.getNameSubject());
-//             course.setYearCourse(courseDtoForCourseController.getYearCourse());
-//             course.setMaxCapacity(courseDtoForCourseController.getMaxCapacity());
-//             // Guardar el curso
-//             courseRepository.save(course);
+             CourseSchedule courseSchedule = new CourseSchedule();
+             courseSchedule.setDayOfWeek(createCourseDto.dayOfWeek());
+             courseSchedule.setTime(createCourseDto.time());
+//             courseSchedule.setCourse(course);
+             courseSchedule.setSchedule(schedule);
+             schedule.addCourseSchedule(courseSchedule);
+             course.addCourseSchedule(courseSchedule);
 
-//             // Crear y asociar los horarios
-//             for (CourseScheduleDto courseScheduleDto : courseDtoForCourseController.getSchedules()) {
-//                 // Validar que el turno existe
-//                 Schedule schedule = scheduleRepository.findById(courseScheduleDto.getScheduleId())
-//                         .orElseThrow(() -> new IllegalArgumentException("Invalid schedule ID"));
-//
-//                 CourseSchedule courseSchedule = new CourseSchedule();
-//                 courseSchedule.setDayOfWeek(courseScheduleDto.getDayOfWeek());
-//                 courseSchedule.setTime(courseScheduleDto.getTime());
-//                 courseSchedule.setSchedule(schedule);
-//
-//                 course.addCourseSchedule(courseSchedule);
-//                 schedule.addCourseSchedule(courseSchedule);
-//
-//                 courseScheduleRepository.save(courseSchedule);
-//             }
-//
-//             // Guardar el curso
-//             courseRepository.save(course);
-//
-//             // Crear respuesta
-//             CourseDtoForCourseController response = new CourseDtoForCourseController(course);
-             return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
+             courseScheduleRepository.save(courseSchedule);
+             courseRepository.save(course);
+//             scheduleRepository.save(schedule);
+
+//             return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
+             CourseDtoForCourseController courseDtoForCourseController = new CourseDtoForCourseController(course);
+
+             return new ResponseEntity<>(courseDtoForCourseController, HttpStatus.CREATED);
 
          }catch (Exception e){
 

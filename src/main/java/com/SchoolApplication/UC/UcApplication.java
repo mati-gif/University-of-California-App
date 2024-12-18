@@ -80,6 +80,7 @@ public class UcApplication {
 // ↓↓↓↓↓↓↓  Course1 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
 //          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         //
 
+			//course 1 : =>=>=>=> MATH
 			CourseSchedule courseSchedule1 = new CourseSchedule("Monday and Wednesday", "8:00 a 10:00");
 			course1.addCourseSchedule(courseSchedule1);
 			schedule1.addCourseSchedule(courseSchedule1);
@@ -102,6 +103,8 @@ public class UcApplication {
 
 // ↓↓↓↓↓↓↓  Course2 junto con schedule1, schedule2 y schedule3 ↓↓↓↓↓↓↓
 //          ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯         //
+
+			//course 2 : =>=>=>=> PHYSICS
 			CourseSchedule courseSchedule4 = new CourseSchedule("Tuesday and Thursday", "10:00 a 12:00");
 			course2.addCourseSchedule(courseSchedule4);
 			schedule1.addCourseSchedule(courseSchedule4);

@@ -32,7 +32,8 @@ public class CourseScheduleDto {
 //        this.moreInfoAboutSchedule = new ScheduleDto(courseSchedule.getSchedule());
     }
 
-
+    public CourseScheduleDto() {
+    }
 
     public Long getId() {
         return id;
