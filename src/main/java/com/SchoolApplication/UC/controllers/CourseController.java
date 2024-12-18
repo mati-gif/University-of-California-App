@@ -141,17 +141,17 @@ public class CourseController {
                  return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
              }
 
-
-             int countQuantityCourses = courseRepository.countByNameSubjectAndCourseIdAndScheduleId(
-                     createCourseDto.nameSubject());
+             int countQuantityCourses = courseRepository.countByNameSubject(
+                     createCourseDto.nameSubject().toLowerCase());
 
              if (countQuantityCourses == 1 ){
-                 return new ResponseEntity<>("Course already exists with nameSubject" + createCourseDto.nameSubject()
-                         + "please create another with diferent nameSubject", HttpStatus.BAD_REQUEST);
+                 return new ResponseEntity<>("Course already exists with nameSubject ->" + " "
+                         + createCourseDto.nameSubject() + " "
+                         + "<- please create another with diferent nameSubject", HttpStatus.BAD_REQUEST);
              }
 
              Course course = new Course();
-             course.setNameSubject(createCourseDto.nameSubject());
+             course.setNameSubject(createCourseDto.nameSubject().toLowerCase());
              course.setYearCourse(createCourseDto.yearCourse());
              course.setMaxCapacity(createCourseDto.maxCapacity());
              courseRepository.save(course);
