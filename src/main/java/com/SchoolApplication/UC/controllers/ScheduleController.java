@@ -86,4 +86,18 @@ public class ScheduleController {
     return new ResponseEntity<>("Days and  times add successfully", HttpStatus.OK);
     }
 
+    @DeleteMapping("/deleteAllSchedule/{id}")
+    public ResponseEntity<?> deleteSchedule(Authentication authentication
+            , @PathVariable Long id) {
+        Student student = studentRepository.findByEmail(authentication.getName());
+
+        if(scheduleRepository.existsById(id)) {
+            scheduleRepository.deleteById(id);
+            return new ResponseEntity<>("Schedule deleted successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 }

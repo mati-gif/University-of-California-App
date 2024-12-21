@@ -380,6 +380,7 @@ public class WebConfig {
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/student/", "/api/student/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
+                                                , "/api/schedule/deleteAllSchedule/{id}"
                                         ).hasAnyRole("STUDENT", "ADMIN", "TEACHER")
                                         // Rutas exclusivas para ADMIN
                                         .requestMatchers(
@@ -389,6 +390,7 @@ public class WebConfig {
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/course/", "/api/course/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
+                                                , "/api/schedule/deleteAllSchedule/{id}"
                                         ).hasRole("ADMIN")
 
 
