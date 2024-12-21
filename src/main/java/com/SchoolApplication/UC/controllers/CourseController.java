@@ -19,7 +19,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -121,25 +123,15 @@ public class CourseController {
                  return new ResponseEntity<>("Course max capacity is required and must be greater than 0", HttpStatus.BAD_REQUEST);
              }
 
-             // Validar el horario y el dia de la semana
-             if (createCourseDto.dayOfWeek() == null || createCourseDto.dayOfWeek().isEmpty()) {
-                 return new ResponseEntity<>("Day of week is required", HttpStatus.BAD_REQUEST);
-             }
 
-             if (createCourseDto.time() == null || createCourseDto.time().isEmpty()) {
-                 return new ResponseEntity<>("Time is required", HttpStatus.BAD_REQUEST);
-             }
-             if (createCourseDto.scheduleId() == null) {
-                 return new ResponseEntity<>("Schedule ID is required", HttpStatus.BAD_REQUEST);
-             }
              Student student = studentRepository.findByEmail(authentication.getName());
-             Schedule schedule = scheduleRepository.findScheduleById(createCourseDto.scheduleId());
+             //Schedule schedule = scheduleRepository.findScheduleById(createCourseDto.scheduleId());
 
 
 
-             if (schedule == null) {
-                 return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
-             }
+//             if (schedule == null) {
+//                 return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
+//             }
 
              int countQuantityCourses = courseRepository.countByNameSubject(
                      createCourseDto.nameSubject().toLowerCase());
@@ -150,23 +142,89 @@ public class CourseController {
                          + "<- please create another with diferent nameSubject", HttpStatus.BAD_REQUEST);
              }
 
+             Set<String> uniqueSchedules = new HashSet<>();
+             for(CourseScheduleDto courseScheduleDto : createCourseDto.schedules()){
+                 String uniqueKey = courseScheduleDto.getScheduleId() + "|"
+                         + courseScheduleDto.getDayOfWeek() + "|"
+                         + courseScheduleDto.getTime() + "|"
+                         + courseScheduleDto.getShift();
+
+                 if (!uniqueSchedules.add(uniqueKey)) {
+                     return new ResponseEntity<>(
+                             "Duplicate CourseSchedule found with scheduleId: "
+                                     + courseScheduleDto.getScheduleId()
+                                     + ", dayOfWeek: " + courseScheduleDto.getDayOfWeek()
+                                     + ", time: " + courseScheduleDto.getTime()
+                                     + ", shift: " + courseScheduleDto.getShift(),
+                             HttpStatus.BAD_REQUEST
+                     );
+                 }
+
+                 if (courseScheduleDto.getDayOfWeek() == null || courseScheduleDto.getDayOfWeek().isEmpty()) {
+                     return new ResponseEntity<>("Day of week is required", HttpStatus.BAD_REQUEST);
+                 }
+
+                 if (courseScheduleDto.getTime() == null || courseScheduleDto.getTime().isEmpty()) {
+                     return new ResponseEntity<>("Time is required", HttpStatus.BAD_REQUEST);
+                 }
+                 if (courseScheduleDto.getScheduleId() < 0 ) {
+                     return new ResponseEntity<>("Schedule ID is required", HttpStatus.BAD_REQUEST);
+                 }
+                 if(courseScheduleDto.getShift() == null ) {
+                     return new ResponseEntity<>("Shift is required", HttpStatus.BAD_REQUEST);
+                 }
+
+                 Schedule schedule = scheduleRepository.findScheduleById(courseScheduleDto.getScheduleId());
+
+                 if(schedule.getCourseSchedules().size() >= 3 ) {
+                     return new ResponseEntity<>("Can not create more than 3 schedule for course with nameSubject : " + createCourseDto.nameSubject(), HttpStatus.NOT_FOUND);
+                 }
+                 if (schedule == null) {
+                     return new ResponseEntity<>("Schedule not found for ID: " + courseScheduleDto.getScheduleId(), HttpStatus.NOT_FOUND);
+                 }
+                 if (courseScheduleDto.getScheduleId() != schedule.getId()) {
+                     return new ResponseEntity<>("Schedule ID does not match ,try with a valid Schedule ID", HttpStatus.BAD_REQUEST);
+                 }
+                 if(!courseScheduleDto.getShift().equals(schedule.getShift())) {
+                     return new ResponseEntity<>("Shift does not match with any shift,try with a valid Shift", HttpStatus.BAD_REQUEST);
+                 }
+                 // Validar que el día de la semana coincida con alguno de los días en la lista
+                 boolean dayOfWeekExists = schedule.getDays().stream()
+                         .anyMatch(day -> day.equals(courseScheduleDto.getDayOfWeek()));
+                 if(!dayOfWeekExists) {
+                     return new ResponseEntity<>("Day of week does not exits in the days list schedule,try with a valid Days of week", HttpStatus.BAD_REQUEST);
+                 }
+                 // Validar que el horario coincida con alguno de los horarios en la lista
+                 boolean timeExists = schedule.getTimes().stream()
+                         .anyMatch(time -> time.equals(courseScheduleDto.getTime()));
+                 if(!timeExists) {
+                     return new ResponseEntity<>("Time does not exits in the times list schedule,try with a valid Time", HttpStatus.BAD_REQUEST);
+                 }
+             }
+
              Course course = new Course();
              course.setNameSubject(createCourseDto.nameSubject().toLowerCase());
              course.setYearCourse(createCourseDto.yearCourse());
              course.setMaxCapacity(createCourseDto.maxCapacity());
              courseRepository.save(course);
 
+             // Iterar sobre la lista de horarios
+             for (CourseScheduleDto courseScheduleDto : createCourseDto.schedules()) {
 
-             CourseSchedule courseSchedule = new CourseSchedule();
-             courseSchedule.setDayOfWeek(createCourseDto.dayOfWeek());
-             courseSchedule.setTime(createCourseDto.time());
-//             courseSchedule.setCourse(course);
-             courseSchedule.setSchedule(schedule);
-             schedule.addCourseSchedule(courseSchedule);
-             course.addCourseSchedule(courseSchedule);
+                 Schedule schedule = scheduleRepository.findScheduleById(courseScheduleDto.getScheduleId());
 
-             courseScheduleRepository.save(courseSchedule);
-             courseRepository.save(course);
+
+                 CourseSchedule courseSchedule = new CourseSchedule();
+                 courseSchedule.setDayOfWeek(courseScheduleDto.getDayOfWeek());
+                 courseSchedule.setTime(courseScheduleDto.getTime());
+                 courseSchedule.setSchedule(schedule);
+
+                 schedule.addCourseSchedule(courseSchedule);
+                 course.addCourseSchedule(courseSchedule);
+
+                 courseScheduleRepository.save(courseSchedule);
+             }
+                 courseRepository.save(course);
 //             scheduleRepository.save(schedule);
 
 //             return new ResponseEntity<>("Course created successfully", HttpStatus.CREATED);
