@@ -3,6 +3,7 @@ import com.SchoolApplication.UC.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -380,8 +381,10 @@ public class WebConfig {
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/student/", "/api/student/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
-                                                , "/api/schedule/deleteAllSchedule/{id}"
+                                                //, "/api/schedule/deleteAllSchedule/{id}"
                                         ).hasAnyRole("STUDENT", "ADMIN", "TEACHER")
+
+                                        .requestMatchers(HttpMethod.DELETE, "/api/schedule/deleteAllSchedule/{id}").hasAuthority("ADMIN")
                                         // Rutas exclusivas para ADMIN
                                         .requestMatchers(
                                                 "/api/student/", "/api/student/**",
@@ -390,7 +393,7 @@ public class WebConfig {
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/course/", "/api/course/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
-                                                , "/api/schedule/deleteAllSchedule/{id}"
+
                                         ).hasRole("ADMIN")
 
 

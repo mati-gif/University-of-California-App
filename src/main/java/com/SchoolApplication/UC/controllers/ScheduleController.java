@@ -86,18 +86,23 @@ public class ScheduleController {
     return new ResponseEntity<>("Days and  times add successfully", HttpStatus.OK);
     }
 
+    @Transactional
     @DeleteMapping("/deleteAllSchedule/{id}")
-    public ResponseEntity<?> deleteSchedule(Authentication authentication
-            , @PathVariable Long id) {
-        Student student = studentRepository.findByEmail(authentication.getName());
-
-        if(scheduleRepository.existsById(id)) {
-            scheduleRepository.deleteById(id);
-            return new ResponseEntity<>("Schedule deleted successfully", HttpStatus.OK);
-        } else {
+    public ResponseEntity<?> deleteSchedule(Authentication authentication, @PathVariable Long id) {
+        // Verifica si el Schedule existe
+        if (!scheduleRepository.existsById(id)) {
             return new ResponseEntity<>("Schedule not found", HttpStatus.NOT_FOUND);
         }
 
+        // Encuentra el Schedule
+        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Schedule not found"));
+
+        // Elimina el Schedule (con cascada elimina los relacionados)
+        scheduleRepository.delete(schedule);
+
+        return new ResponseEntity<>("Schedule deleted successfully", HttpStatus.OK);
     }
+
 
 }
