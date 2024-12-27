@@ -1,13 +1,7 @@
 package com.SchoolApplication.UC.controllers;
 
-import com.SchoolApplication.UC.dtos.CourseDto;
-import com.SchoolApplication.UC.dtos.CourseDtoForCourseController;
-import com.SchoolApplication.UC.dtos.CourseScheduleDto;
-import com.SchoolApplication.UC.dtos.CreateCourseDto;
-import com.SchoolApplication.UC.models.Course;
-import com.SchoolApplication.UC.models.CourseSchedule;
-import com.SchoolApplication.UC.models.Schedule;
-import com.SchoolApplication.UC.models.Student;
+import com.SchoolApplication.UC.dtos.*;
+import com.SchoolApplication.UC.models.*;
 import com.SchoolApplication.UC.repositories.CourseRepository;
 import com.SchoolApplication.UC.repositories.CourseScheduleRepository;
 import com.SchoolApplication.UC.repositories.ScheduleRepository;
@@ -241,6 +235,21 @@ public class CourseController {
 
 
         }
+
+
+        @GetMapping("/coursesAvailableStudent")
+        public ResponseEntity<?> getCoursesAvailableStudent(Authentication authentication) {
+            Student student = studentRepository.findByEmail(authentication.getName());
+            Set<StudentCourse> studentCourse = student.getStudentCourses();
+            System.out.println(studentCourse);
+
+            List<StudentCourseDto> studentCourseDto = studentCourse.stream().map(sc ->
+                    new StudentCourseDto(sc)).collect(Collectors.toList());
+
+            System.out.println(studentCourseDto);
+        return new ResponseEntity<>(studentCourseDto, HttpStatus.OK);
+    }
+
 
 
 

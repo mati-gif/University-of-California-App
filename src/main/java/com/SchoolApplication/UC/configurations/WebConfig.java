@@ -380,8 +380,10 @@ public class WebConfig {
                                                 "/api/teacher/**", "/api/teacher/",
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/student/", "/api/student/**",
-                                                "/api/course/create", "/api/schedule/createNewSchedule"
+                                                "/api/course/create", "/api/schedule/createNewSchedule",
                                                 //, "/api/schedule/deleteAllSchedule/{id}"
+                                                "/api/student/confirmCourse/{id}"
+                                                ,"/api/course/create/coursesAvailableStudent"
                                         ).hasAnyRole("STUDENT", "ADMIN", "TEACHER")
 
                                         .requestMatchers(HttpMethod.DELETE, "/api/schedule/deleteAllSchedule/{id}").hasAuthority("ADMIN")
@@ -393,6 +395,7 @@ public class WebConfig {
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/course/", "/api/course/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
+                                                //,"/api/course/create/coursesAvailableStudent"
 
                                         ).hasRole("ADMIN")
 
