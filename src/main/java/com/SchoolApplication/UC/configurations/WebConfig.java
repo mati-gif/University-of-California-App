@@ -380,13 +380,14 @@ public class WebConfig {
                                                 "/api/teacher/**", "/api/teacher/",
                                                 "/api/attendance/", "/api/attendance/**",
                                                 "/api/student/", "/api/student/**",
-                                                "/api/course/create", "/api/schedule/createNewSchedule",
+                                                "/api/course/create", "/api/schedule/createNewSchedule"
                                                 //, "/api/schedule/deleteAllSchedule/{id}"
-                                                "/api/student/confirmCourse/{id}"
-                                                ,"/api/course/create/coursesAvailableStudent"
+                                               // "/api/student/confirmCourse/{id}"
+                                                //,"/api/course/coursesAvailableStudent"
                                         ).hasAnyRole("STUDENT", "ADMIN", "TEACHER")
 
-                                        .requestMatchers(HttpMethod.DELETE, "/api/schedule/deleteAllSchedule/{id}").hasAuthority("ADMIN")
+                                        .requestMatchers( "/api/course/coursesAvailableStudent", "/api/student/confirmCourse/{id}").hasRole("STUDENT")
+                                        .requestMatchers(HttpMethod.DELETE, "/api/schedule/deleteAllSchedule/{id}").hasRole("ADMIN")
                                         // Rutas exclusivas para ADMIN
                                         .requestMatchers(
                                                 "/api/student/", "/api/student/**",

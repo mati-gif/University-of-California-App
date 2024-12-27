@@ -242,7 +242,9 @@ public class CourseController {
             Student student = studentRepository.findByEmail(authentication.getName());
             Set<StudentCourse> studentCourse = student.getStudentCourses();
             System.out.println(studentCourse);
-
+            if (studentCourse.isEmpty()) {
+                return new ResponseEntity<>("No courses found for the student", HttpStatus.OK);
+            }
             List<StudentCourseDto> studentCourseDto = studentCourse.stream().map(sc ->
                     new StudentCourseDto(sc)).collect(Collectors.toList());
 
