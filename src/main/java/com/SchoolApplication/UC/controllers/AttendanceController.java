@@ -2,13 +2,16 @@ package com.SchoolApplication.UC.controllers;
 
 import com.SchoolApplication.UC.dtos.AttendanceDto;
 import com.SchoolApplication.UC.models.Attendance;
+import com.SchoolApplication.UC.models.Student;
+import com.SchoolApplication.UC.models.StudentCourse;
 import com.SchoolApplication.UC.repositories.AttendanceRepository;
+import com.SchoolApplication.UC.repositories.StudentCourseRepository;
+import com.SchoolApplication.UC.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +22,12 @@ public class AttendanceController {
 
     @Autowired
     AttendanceRepository attendanceRepository;
+
+    @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    StudentCourseRepository studentCourseRepository;
 
     @GetMapping("/")
     public ResponseEntity<?> getAttendance() {
@@ -35,4 +44,49 @@ public class AttendanceController {
 
         return new ResponseEntity(attendanceDtos, HttpStatus.OK);
     }
+
+    @GetMapping("/availableAttendancesOfStudent")
+    public ResponseEntity<?> getAvailableAttendancesOfStudent(Authentication authentication) {
+        // Obtener al estudiante autenticado
+        Student student = studentRepository.findByEmail(authentication.getName());
+
+        // Obtener las asistencias relacionadas con el estudiante a través de los StudentCourses
+        List<Attendance> attendances = student.getStudentCourses().stream()
+                .flatMap(sc -> sc.getAttendances().stream()) // Obtenemos las asistencias de cada StudentCourse
+                .collect(Collectors.toList());
+
+        // Convertir las asistencias a AttendanceDto
+        List<AttendanceDto> attendanceDtos = attendances.stream()
+                .map(AttendanceDto::new) // Convertimos cada Attendance a su DTO
+                .collect(Collectors.toList());
+
+        // Retornar la lista de AttendanceDto como respuesta
+        return new ResponseEntity<>(attendanceDtos, HttpStatus.OK);
+    }
+
+    @PostMapping("/createNewAttendance/{studentCourseId}")
+    public ResponseEntity<?> createAttendance(@PathVariable Long studentCourseId, @RequestBody AttendanceDto attendanceDto) {
+        try {
+            // Validar que el StudentCourse existe
+            StudentCourse studentCourse = studentCourseRepository.findById(studentCourseId)
+                    .orElseThrow(() -> new RuntimeException("StudentCourse not found"));
+
+            // Crear una nueva asistencia
+            Attendance attendance = new Attendance();
+            attendance.setDate(attendanceDto.getDate());
+            attendance.setStatusAttendance(attendanceDto.getStatusAttendance());
+            studentCourse.addAttendance(attendance);
+
+            // Guardar asistencia y actualizar el porcentaje
+            attendanceRepository.save(attendance);
+            studentCourseRepository.save(studentCourse);
+
+            return new ResponseEntity<>(new AttendanceDto(attendance), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+
 }

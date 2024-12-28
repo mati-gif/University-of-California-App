@@ -118,6 +118,17 @@ public class StudentCourse {
         enrollments.add(enrollment);
     }
 
+    // Método para calcular el porcentaje de asistencia
+    public void updateAttendancePercentage() {
+        if (attendances.isEmpty()) {
+            this.monthlyAttendancePercentage = 0.0;
+        } else {
+            long presentCount = attendances.stream()
+                    .filter(att -> att.getStatusAttendance() == StatusAttendance.PRESENT)
+                    .count();
+            this.monthlyAttendancePercentage = (presentCount * 100.0) / attendances.size();
+        }
+    }
 
     //Reveer la logica para añadir una  asistencia , No esta funcionando bien .
     public void addAttendance(Attendance attendance) {
@@ -126,19 +137,6 @@ public class StudentCourse {
         updateAttendancePercentage(); // Actualiza el porcentaje de asistencia acumulado
     }
 
-    private void updateAttendancePercentage() {
-        // Filtrar por mes actual
-        long diasAsistidos = attendances.stream()
-                .filter(att -> att.getDate().getMonth() == LocalDateTime.now().getMonth() &&
-                        att.getStatusAttendance() == StatusAttendance.PRESENT)
-                .count();
 
-        long diasTotales = attendances.stream()
-                .filter(att -> att.getDate().getMonth() == LocalDateTime.now().getMonth())
-                .count();
-
-        // Calcular el porcentaje
-        this.monthlyAttendancePercentage = diasTotales > 0 ? (diasAsistidos * 100.0) / diasTotales : 0.0;
-    }
 
 }

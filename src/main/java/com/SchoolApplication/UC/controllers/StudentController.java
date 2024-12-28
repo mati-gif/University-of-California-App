@@ -85,7 +85,9 @@ public class StudentController {
             studentCourse.setCourse(course);
             studentCourse.setRegistrationDate(LocalDateTime.now());
             studentCourse.setStatus(Status.APPROVED); // Estado inicial
-            studentCourse.setMonthlyAttendancePercentage(0.0);
+            //studentCourse.setMonthlyAttendancePercentage(0.0);
+            // Calcular el porcentaje inicial basado en asistencias existentes
+            studentCourse.updateAttendancePercentage();
 
             // Guardar el StudentCourse primero para obtener su ID
             studentCourseRepository.save(studentCourse);

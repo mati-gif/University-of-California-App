@@ -384,6 +384,8 @@ public class WebConfig {
                                                 //, "/api/schedule/deleteAllSchedule/{id}"
                                                // "/api/student/confirmCourse/{id}"
                                                 //,"/api/course/coursesAvailableStudent"
+                                                ,"/api/attendance/availableAttendancesOfStudent"
+
                                         ).hasAnyRole("STUDENT", "ADMIN", "TEACHER")
 
                                         .requestMatchers( "/api/course/coursesAvailableStudent", "/api/student/confirmCourse/{id}").hasRole("STUDENT")
@@ -397,6 +399,8 @@ public class WebConfig {
                                                 "/api/course/", "/api/course/**",
                                                 "/api/course/create", "/api/schedule/createNewSchedule"
                                                 //,"/api/course/create/coursesAvailableStudent"
+                                                ,"/api/attendance/availableAttendancesOfStudent"
+                                                ,"/api/attendance/createNewAttendance/{studentCourseId}"
 
                                         ).hasRole("ADMIN")
 
